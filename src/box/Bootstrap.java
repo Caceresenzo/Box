@@ -12,7 +12,7 @@ import net.sociuris.logger.Logger;
 public class Bootstrap {
 
 	private static final Logger LOGGER = Logger.getLogger();
-	private static File workingDirectory = new File(".");
+	private static File workingDirectory = new File(System.getProperty("user.dir", "."));
 
 	public static void main(String[] args) {
 		try {
@@ -65,6 +65,15 @@ public class Bootstrap {
 						while ((line = reader.readLine()) != null) {
 							if (line.equalsIgnoreCase("stop")) {
 								System.exit(0);
+							} else {
+								final String lineSeparator = System.lineSeparator();
+								StringBuilder builder = new StringBuilder();
+								if (!line.equalsIgnoreCase("help"))
+									builder.append("Unknown command. ");
+								builder.append("List of commands:").append(lineSeparator);
+								builder.append("\t- help : show this message").append(lineSeparator);
+								builder.append("\t- stop");
+								System.out.println(builder.toString());
 							}
 						}
 					} catch (IOException e) {
@@ -79,6 +88,7 @@ public class Bootstrap {
 				@Override
 				public void run() {
 					try {
+						LOGGER.info("Stopping...");
 						theBox.stopServers();
 						configurationFile.save();
 					} catch (IOException e) {
@@ -99,8 +109,16 @@ public class Bootstrap {
 		final ConfigurationFile settings = new ConfigurationFile(settingsFile);
 
 		final ConfigurationSection webServerSection = settings.getSection("webServer");
+		webServerSection.addDefaultProperty("enable", true);
 		webServerSection.addDefaultProperty("ipAddress", "127.0.0.1");
 		webServerSection.addDefaultProperty("port", 8080);
+
+		final ConfigurationSection socketServerSection = settings.getSection("socketServer");
+		socketServerSection.addDefaultProperty("enable", true);
+		socketServerSection.addDefaultProperty("ipAddress", "127.0.0.1");
+		socketServerSection.addDefaultProperty("port", 32768);
+
+		settings.save();
 
 		return settings;
 	}
