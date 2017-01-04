@@ -43,7 +43,8 @@ public class Bootstrap {
 				}
 			}
 
-			TheBox theBox = new TheBox(Bootstrap.loadProperties(settingsFile));
+			final ConfigurationFile configurationFile = Bootstrap.loadProperties(settingsFile);
+			final TheBox theBox = new TheBox(configurationFile);
 
 			Thread consoleHandlerThread = new Thread("Console handler") {
 				public void run() {
@@ -66,7 +67,12 @@ public class Bootstrap {
 			Runtime.getRuntime().addShutdownHook(new Thread("Shutdown Thread") {
 				@Override
 				public void run() {
-					theBox.stopServers();
+					try {
+						theBox.stopServers();
+						configurationFile.save();
+					} catch (IOException e) {
+						LOGGER.error("An error occurred while stopping TheBox: %s", e.getLocalizedMessage());
+					}
 				}
 			});
 		} catch (IOException e) {

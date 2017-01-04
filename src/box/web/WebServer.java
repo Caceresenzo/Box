@@ -17,7 +17,7 @@ public class WebServer extends HttpWebServer {
 
 	@Override
 	public void handleConnection(HttpRequest httpRequest, HttpHeader httpHeader, HttpResponse httpResponse) throws IOException {
-		httpResponse.throwError(HttpStatusCode.CLIENT_ERROR_NOT_FOUND);
+		httpResponse.setStatusCode(HttpStatusCode.SUCCESS_OK);
 	}
 
 }
