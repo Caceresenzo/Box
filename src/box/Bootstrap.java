@@ -12,6 +12,7 @@ import net.sociuris.logger.Logger;
 public class Bootstrap {
 
 	private static final Logger LOGGER = Logger.getLogger();
+	private static File workingDirectory = new File(".");
 
 	public static void main(String[] args) {
 		try {
@@ -22,23 +23,32 @@ public class Bootstrap {
 			for (String arg : args) {
 				if (arg.startsWith("-"))
 					arg = arg.substring(1);
-				String key = arg, value = arg;
+				String key = arg;
+				String value = arg;
+
 				if (arg.contains("=")) {
-					String[] splitArg = arg.split("=", 1);
+					String[] splitArg = arg.split("=", 2);
 					key = splitArg[0];
 					if (splitArg.length == 2)
 						value = splitArg[1];
 				}
+
 				LOGGER.debug("arg[key=%s,value=%s]", key, value);
+
 				switch (key) {
 				case "debug":
 					LOGGER.setDebug(true);
 					break;
-				case "settings-file":
+				case "workingDirectory":
+					workingDirectory = new File(value);
+					if (!workingDirectory.exists())
+						workingDirectory.mkdirs();
+					break;
+				case "settingsFile":
 					settingsFile = value;
 					break;
 				default:
-					LOGGER.warn("Invalid argument: %s", arg);
+					LOGGER.debug("Invalid argument: %s", arg);
 					break;
 				}
 			}
@@ -53,8 +63,9 @@ public class Bootstrap {
 
 					try {
 						while ((line = reader.readLine()) != null) {
-							LOGGER.info("Input line: %s", line);
-							// process console command
+							if (line.equalsIgnoreCase("stop")) {
+								System.exit(0);
+							}
 						}
 					} catch (IOException e) {
 						LOGGER.error("Exception handling console input: %s", e.getLocalizedMessage());
@@ -81,7 +92,7 @@ public class Bootstrap {
 	}
 
 	public static ConfigurationFile loadProperties(String settingsFilePath) throws IOException {
-		final File settingsFile = new File(settingsFilePath);
+		final File settingsFile = new File(workingDirectory, settingsFilePath);
 
 		if (!settingsFile.exists())
 			settingsFile.createNewFile();
