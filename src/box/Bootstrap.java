@@ -93,12 +93,11 @@ public class Bootstrap {
 
 	public static ConfigurationFile loadProperties(String settingsFilePath) throws IOException {
 		final File settingsFile = new File(workingDirectory, settingsFilePath);
-
 		if (!settingsFile.exists())
 			settingsFile.createNewFile();
 
 		final ConfigurationFile settings = new ConfigurationFile(settingsFile);
-
+		
 		final ConfigurationSection webServerSection = settings.getSection("webServer");
 		webServerSection.addDefaultProperty("ipAddress", "127.0.0.1");
 		webServerSection.addDefaultProperty("port", 8080);
