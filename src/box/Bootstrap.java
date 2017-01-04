@@ -108,6 +108,11 @@ public class Bootstrap {
 
 		final ConfigurationFile settings = new ConfigurationFile(settingsFile);
 
+		final ConfigurationSection minecraftServerSection = settings.getSection("minecraftServer");
+		minecraftServerSection.addDefaultProperty("javaPath", System.getProperty("java.home"));
+		minecraftServerSection.addDefaultProperty("jvmArguments", "");
+		minecraftServerSection.addDefaultProperty("additionalArguments", "-Xmx1G");
+		
 		final ConfigurationSection webServerSection = settings.getSection("webServer");
 		webServerSection.addDefaultProperty("enable", true);
 		webServerSection.addDefaultProperty("ipAddress", "127.0.0.1");
