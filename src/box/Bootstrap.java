@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import box.minecraft.exception.ServerStopException;
 import net.sociuris.configuration.ConfigurationFile;
 import net.sociuris.configuration.ConfigurationSection;
 import net.sociuris.logger.Logger;
@@ -62,20 +63,8 @@ public class Bootstrap {
 					String line;
 
 					try {
-						while ((line = reader.readLine()) != null) {
-							if (line.equalsIgnoreCase("stop")) {
-								System.exit(0);
-							} else {
-								final String lineSeparator = System.lineSeparator();
-								StringBuilder builder = new StringBuilder();
-								if (!line.equalsIgnoreCase("help"))
-									builder.append("Unknown command. ");
-								builder.append("List of commands:").append(lineSeparator);
-								builder.append("\t- help : show this message").append(lineSeparator);
-								builder.append("\t- stop");
-								System.out.println(builder.toString());
-							}
-						}
+						while ((line = reader.readLine()) != null)
+							ConsoleHandler.handle(theBox, line.trim());
 					} catch (IOException e) {
 						LOGGER.error("Exception handling console input: %s", e.getLocalizedMessage());
 					}
@@ -91,8 +80,8 @@ public class Bootstrap {
 						LOGGER.info("Stopping...");
 						theBox.stopServers();
 						configurationFile.save();
-					} catch (IOException e) {
-						LOGGER.error("An error occurred while stopping TheBox: %s", e.getLocalizedMessage());
+					} catch (IOException | ServerStopException e) {
+						LOGGER.error("Unable to stop TheBox: %s", e.getLocalizedMessage());
 					}
 				}
 			});
