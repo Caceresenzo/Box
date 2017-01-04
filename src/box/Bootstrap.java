@@ -97,7 +97,7 @@ public class Bootstrap {
 			settingsFile.createNewFile();
 
 		final ConfigurationFile settings = new ConfigurationFile(settingsFile);
-		
+
 		final ConfigurationSection webServerSection = settings.getSection("webServer");
 		webServerSection.addDefaultProperty("ipAddress", "127.0.0.1");
 		webServerSection.addDefaultProperty("port", 8080);
