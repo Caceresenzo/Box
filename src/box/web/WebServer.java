@@ -16,7 +16,6 @@ public class WebServer extends HttpWebServer {
 
 	@Override
 	public void handleConnection(HttpRequest httpRequest, HttpHeader httpHeader, HttpResponse httpResponse) throws IOException {
-		
 	}
 
 }

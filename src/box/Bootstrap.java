@@ -69,7 +69,6 @@ public class Bootstrap {
 					theBox.stopServers();
 				}
 			});
-
 		} catch (IOException e) {
 			LOGGER.error("Unable to start TheBox: %s", e.getLocalizedMessage());
 		}

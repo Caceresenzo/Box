@@ -22,7 +22,6 @@ public class TheBox {
 	}
 
 	public void stopServers() {
-		
 	}
 	
 }
