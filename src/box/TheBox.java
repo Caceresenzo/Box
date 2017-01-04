@@ -15,6 +15,7 @@ public class TheBox {
 	public TheBox(ConfigurationFile configurationFile) {
 		TheBox.instance = this;
 		this.webServer = new WebServer(configurationFile.getSection("webServer"));
+		this.webServer.start();
 	}
 	
 	public WebServer getWebServer() {
