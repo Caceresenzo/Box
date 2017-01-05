@@ -8,11 +8,12 @@ import com.google.gson.JsonObject;
 
 import box.TheBox;
 import net.sociuris.configuration.ConfigurationSection;
-import net.sociuris.http.HttpHeader;
 import net.sociuris.http.HttpRequest;
 import net.sociuris.http.HttpResponse;
+import net.sociuris.http.HttpResponseHeader;
+import net.sociuris.http.HttpStatusCode;
 import net.sociuris.http.HttpWebServer;
-import net.sociuris.logger.Logger;
+import net.sociuris.util.HtmlUtils;
 
 public class WebServer extends HttpWebServer {
 
@@ -21,28 +22,36 @@ public class WebServer extends HttpWebServer {
 	}
 
 	@Override
-	public void handleConnection(HttpRequest httpRequest, HttpHeader httpHeader, HttpResponse httpResponse)
+	public void handleConnection(HttpRequest httpRequest, HttpResponse httpResponse)
 			throws IOException {
-		//HttpHeader httpHeader = httpResponse.getHeader();
+		HttpResponseHeader httpHeader = httpResponse.getHeader();
 		httpHeader.set("Server", "TheBox v" + TheBox.VERSION);
+		
 		String requestUri = httpRequest.getRequestedUri().toLowerCase();
-		Logger.getLogger().info("request uri : %s", requestUri);
-		if (requestUri.isEmpty()) {
-			//httpResponse.setContent(createPage("TheBox", "", "<h1>In development...</h1>"));
-		} else if (requestUri.startsWith("api")) {
-			httpHeader.setContentType("application/json");
-
+		
+		if (requestUri.startsWith("/api")) {
+			
+			httpHeader.setContentType("application/json", StandardCharsets.UTF_8);
+			
 			JsonObject jsonObject = new JsonObject();
 			jsonObject.addProperty("status", 200);
 			jsonObject.addProperty("version", 1.0);
 
 			httpResponse.setContent(jsonObject.toString());
-		} else if (requestUri.equals("favicon.ico")) {
+			
+		} else if (requestUri.equals("/favicon.ico")) {
+			
 			InputStream inputStream = TheBox.class.getResourceAsStream("/box/assets/icon.png");
 			byte[] imageByteArray = new byte[inputStream.available()];
 			inputStream.read(imageByteArray);
-			httpResponse.setContent(imageByteArray, StandardCharsets.ISO_8859_1);
-			httpHeader.setContentType("image/png");
+			httpResponse.setContent(imageByteArray, StandardCharsets.UTF_8);
+			httpHeader.setContentType("image/png", StandardCharsets.UTF_8);
+			
+		}
+		else {
+			
+			httpResponse.setContent(HtmlUtils.generatePage(HttpStatusCode.SUCCESS_OK));
+			
 		}
 	}
 
