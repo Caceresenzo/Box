@@ -41,7 +41,8 @@ public class WebServer extends HttpWebServer {
 	@Override
 	public void handleConnection(HttpRequest httpRequest, HttpHeader httpHeader, HttpResponse httpResponse)
 			throws IOException {
-
+		//HttpHeader httpHeader = httpResponse.getHeader();
+		httpHeader.set("Server", "TheBox v" + TheBox.VERSION);
 		String requestUri = httpRequest.getRequestedUri().toLowerCase();
 		Logger.getLogger().info("request uri : %s", requestUri);
 		if (requestUri.isEmpty()) {
