@@ -10,6 +10,9 @@ public class ConsoleHandler {
 	private static final PrintStream OUT = System.out;
 
 	public static void handle(TheBox theBox, String line) {
+		if (line.startsWith("/"))
+			line = line.substring(1);
+		
 		if (line.equals("stop")) {
 			System.exit(0);
 		} else {
