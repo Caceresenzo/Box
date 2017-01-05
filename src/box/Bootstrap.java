@@ -16,6 +16,7 @@ public class Bootstrap {
 	private static File workingDirectory = new File(System.getProperty("user.dir", "."));
 
 	public static void main(String[] args) {
+		Logger.getLogger().setDebug(true);
 		try {
 			Thread.currentThread().setName("Main");
 
