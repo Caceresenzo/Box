@@ -11,6 +11,8 @@ import net.sociuris.configuration.ConfigurationFile;
 
 public class TheBox {
 
+	public static final String VERSION = "0.1b";
+	
 	private static TheBox instance;
 
 	public static TheBox get() {
