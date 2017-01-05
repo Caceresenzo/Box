@@ -7,6 +7,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import box.database.Database;
+import box.utils.FileUtils;
 
 /**
  * Connects to and uses a SQLite database
@@ -23,6 +24,7 @@ public class SQLite extends Database {
 	 */
 	public SQLite(String dbLocation) {
 		this.dbLocation = dbLocation;
+		this.dbName = dbLocation.replace(FileUtils.getExtension(dbLocation), "");
 	}
 	
 	@Override

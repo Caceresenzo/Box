@@ -6,5 +6,7 @@
 	<classpathentry kind="lib" path="lib/gson-2.8.0.jar"/>
 	<classpathentry kind="lib" path="lib/logger-1.1.jar"/>
 	<classpathentry kind="lib" path="lib/http-utils-1.1.jar"/>
+	<classpathentry kind="lib" path="lib/jdbc-driver-mysql-connector-5.1.39-bin.jar"/>
+	<classpathentry kind="lib" path="lib/jdbc-driver-sqlite-3.15.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

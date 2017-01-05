@@ -11,8 +11,8 @@ import java.sql.Statement;
  * @author Enzo CACERES
  */
 public abstract class Database {
-
 	protected Connection connection;
+	public String dbName;
 	
 	/**
 	 * Creates a new Database
@@ -20,6 +20,7 @@ public abstract class Database {
 	 */
 	protected Database() {
 		this.connection = null;
+		this.dbName = null;
 	}
 	
 	/**
