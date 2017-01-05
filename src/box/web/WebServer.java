@@ -1,10 +1,8 @@
 package box.web;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-
-import javax.imageio.ImageIO;
 
 import com.google.gson.JsonObject;
 
@@ -56,10 +54,10 @@ public class WebServer extends HttpWebServer {
 
 			httpResponse.setContent(jsonObject.toString());
 		} else if (requestUri.equals("favicon.ico")) {
-			ByteArrayOutputStream imageByteArray = new ByteArrayOutputStream();
-			ImageIO.write(ImageIO.read(TheBox.class.getResource("/box/assets/icon.png")), "png", imageByteArray);
-			imageByteArray.flush();
-			httpResponse.setContent(imageByteArray.toByteArray(), StandardCharsets.ISO_8859_1);
+			InputStream inputStream = TheBox.class.getResourceAsStream("/box/assets/icon.png");
+			byte[] imageByteArray = new byte[inputStream.available()];
+			inputStream.read(imageByteArray);
+			httpResponse.setContent(imageByteArray, StandardCharsets.ISO_8859_1);
 			httpHeader.setContentType("image/png");
 		}
 	}
