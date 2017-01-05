@@ -54,6 +54,7 @@ public class MySQL extends Database {
 		this.database = database;
 		this.user = username;
 		this.password = password;
+		this.dbName = database;
 	}
 	
 	@Override
