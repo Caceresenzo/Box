@@ -1,25 +1,21 @@
 package box;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 
-import box.database.mysql.MySQL;
+import box.database.Database;
 
 public class Test {
 	
 	public static void main(String[] args) {
-		MySQL mysql = new MySQL("localhost", "3306", "root", "");
-		Connection connection = null;
+
+		Database.setupDefault();
 		
 		try {
-			connection = mysql.openConnection();
-
-			System.out.println(String.valueOf(connection.getMetaData()));
-			
-		} catch (ClassNotFoundException | SQLException e) {
+			System.out.println(Database.web.checkConnection());
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 	}
 	
 }

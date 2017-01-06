@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import box.database.sqlite.SQLite;
+import net.sociuris.logger.Logger;
 
 /**
  * Abstract Database class, serves as a base for any connection method (MySQL, SQLite, etc.)
@@ -15,6 +16,8 @@ import box.database.sqlite.SQLite;
 public abstract class Database {
 	protected Connection connection;
 	public String dbName;
+	
+	private static final Logger logger = Logger.getLogger();
 	
 	/**
 	 * Creates a new Database
@@ -109,7 +112,7 @@ public abstract class Database {
 	 * @throws ClassNotFoundException
 	 *             If the driver cannot be found; see {@link #openConnection()}
 	 */
-	public int updateSQL(String query) throws SQLException, ClassNotFoundException {
+	public Integer updateSQL(String query) throws SQLException, ClassNotFoundException {
 		if (!checkConnection()) {
 			openConnection();
 		}
@@ -130,5 +133,12 @@ public abstract class Database {
 	public static void setupDefault() {
 		web = new SQLite("web.db");
 		data = new SQLite("data.db");
+		try {
+			web.openConnection();
+			data.openConnection();
+		} catch (ClassNotFoundException | SQLException exception) {
+			logger.error("An error occurred while creating default databases!");
+			logger.printStackTrace(exception);
+		}
 	}
 }
