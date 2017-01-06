@@ -1,11 +1,8 @@
 package box.database;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import box.database.sqlite.SQLite;
 import net.sociuris.logger.Logger;
 
 public class DatabaseManager {
@@ -22,18 +19,18 @@ public class DatabaseManager {
 	
 	public void setupDatabase() {
 		try {
-			if (Database.web != null && Database.web.checkConnection()) {
-				Database.web.closeConnection();
+			if (Databases.web != null && Databases.web.checkConnection()) {
+				Databases.web.closeConnection();
 			}
-			if (Database.data != null && Database.data.checkConnection()) {
-				Database.data.closeConnection();
+			if (Databases.data != null && Databases.data.checkConnection()) {
+				Databases.data.closeConnection();
 			}
 			
-			Database.web = new SQLite("web.db");
-			Database.data = new SQLite("data.db");
+			Databases.web = new Database("web.db");
+			Databases.data = new Database("data.db");
 			
-			Database.web.openConnection();
-			Database.data.openConnection();
+			Databases.web.openConnection();
+			Databases.data.openConnection();
 		} catch (ClassNotFoundException | SQLException exception) {
 			logger.error("An error occurred while creating default databases!");
 			logger.printStackTrace(exception);
@@ -42,16 +39,17 @@ public class DatabaseManager {
 	
 	public void initDatabase() {
 		try {
-			if (Database.web.checkConnection()) {
+			if (Databases.web.checkConnection()) {
 				String query = ""
 						+ "DROP TABLE IF EXISTS `web_session`;"
 						+ "CREATE TABLE IF NOT EXISTS `web_session` ("
 						+ "  `session_id` varchar(100) NOT NULL,"
 						+ "  `session_ip` varchar(16) NOT NULL,"
 						+ "  `session_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,"
+						+ "  `session_token` varchar(100) NOT NULL,"
 						+ "  PRIMARY KEY (`session_id`)"
 						+ ");";
-				Statement statement = Database.web.getConnection().createStatement();
+				Statement statement = Databases.web.getConnection().createStatement();
 				Integer response = statement.executeUpdate(query);
 				statement.close();
 				System.out.println(": " + response);

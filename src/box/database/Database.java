@@ -1,33 +1,35 @@
 package box.database;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import box.database.sqlite.SQLite;
-import net.sociuris.logger.Logger;
+import box.utils.FileUtils;
 
 /**
- * Abstract Database class, serves as a base for any connection method (MySQL, SQLite, etc.)
- * 
+ * Database class, serves as a base for any connection method (MySQL, SQLite, etc.)
+ *
  * @author Enzo CACERES
  */
-public abstract class Database {
+public class Database {
 	protected Connection connection;
+	private final String dbLocation;
 	public String dbName;
 	
-	private static final Logger logger = Logger.getLogger();
-	
 	/**
-	 * Creates a new Database
+	 * Creates a new SQLite instance
 	 *
+	 * @param dbLocation Location of the Database (Must end in .db)
 	 */
-	protected Database() {
-		this.connection = null;
-		this.dbName = null;
+	public Database(String dbLocation) {
+		this.dbLocation = dbLocation;
+		this.dbName = dbLocation.replace(FileUtils.getExtension(dbLocation), "");
 	}
-	
+
 	/**
 	 * Opens a connection with the database
 	 * 
@@ -37,8 +39,29 @@ public abstract class Database {
 	 * @throws ClassNotFoundException
 	 *             if the driver cannot be found
 	 */
-	public abstract Connection openConnection() throws SQLException, ClassNotFoundException;
-	
+	public Connection openConnection() throws SQLException, ClassNotFoundException {
+		if (checkConnection()) {
+			return connection;
+		}
+		
+		File dataFolder = new File("database/");
+		if (!dataFolder.exists()) {
+			dataFolder.mkdirs();
+		}
+		
+		File file = new File(dataFolder, dbLocation);
+		if (!(file.exists())) {
+			try {
+				file.createNewFile();
+			} catch (IOException e) {
+				System.out.println("Unable to create database!");
+			}
+		}
+		Class.forName("org.sqlite.JDBC");
+		connection = DriverManager.getConnection("jdbc:sqlite:" + dataFolder + "/" + dbLocation);
+		return connection;
+	}
+
 	/**
 	 * Checks if a connection is open with the database
 	 * 
@@ -49,7 +72,7 @@ public abstract class Database {
 	public boolean checkConnection() throws SQLException {
 		return connection != null && !connection.isClosed();
 	}
-	
+
 	/**
 	 * Gets the connection with the database
 	 * 
@@ -58,7 +81,7 @@ public abstract class Database {
 	public Connection getConnection() {
 		return connection;
 	}
-	
+
 	/**
 	 * Closes the connection with the database
 	 * 
@@ -73,7 +96,7 @@ public abstract class Database {
 		connection.close();
 		return true;
 	}
-	
+
 	/**
 	 * Executes a SQL Query<br>
 	 * 
@@ -124,10 +147,4 @@ public abstract class Database {
 		return result;
 	}
 	
-	/*
-	 * DEFAULT DATABASE, SQLITE
-	 * Web, Data, ...
-	 */
-	public static Database web;
-	public static Database data;
 }
