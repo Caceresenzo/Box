@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import box.minecraft.exception.ServerStopException;
 import net.sociuris.configuration.ConfigurationFile;
 import net.sociuris.configuration.ConfigurationSection;
+import net.sociuris.crash.CrashReport;
 import net.sociuris.logger.Logger;
 
 public class Bootstrap {
@@ -86,7 +87,7 @@ public class Bootstrap {
 				}
 			});
 		} catch (IOException e) {
-			LOGGER.error("Unable to start TheBox: %s", e.getLocalizedMessage());
+			CrashReport.makeCrashReport("Unable to start TheBox!", e);
 		}
 	}
 
@@ -101,7 +102,7 @@ public class Bootstrap {
 		minecraftServerSection.addDefaultProperty("javaPath", System.getProperty("java.home"));
 		minecraftServerSection.addDefaultProperty("jvmArguments", "");
 		minecraftServerSection.addDefaultProperty("additionalArguments", "-Xmx1G");
-		
+
 		final ConfigurationSection webServerSection = settings.getSection("webServer");
 		webServerSection.addDefaultProperty("enable", true);
 		webServerSection.addDefaultProperty("ipAddress", "127.0.0.1");
