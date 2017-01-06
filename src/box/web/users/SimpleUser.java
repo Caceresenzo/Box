@@ -13,8 +13,10 @@ public class SimpleUser {
 	private Boolean valid = false;
 	
 	public SimpleUser(String username, String password) {
+		this.id = -1;
 		this.username = username;
 		this.password = password;
+		this.level = UserLevel.UNKNOWN;
 		
 		check();
 	}
@@ -38,6 +40,10 @@ public class SimpleUser {
 	
 	public String getPassword() {
 		return this.password;
+	}
+	
+	public UserLevel getLevel() {
+		return this.level;
 	}
 	
 	public Boolean isValid() {

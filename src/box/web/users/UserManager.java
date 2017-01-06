@@ -1,8 +1,8 @@
 package box.web.users;
 
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,17 +35,15 @@ public class UserManager {
 	public Integer checkUser(String username, String password) {
 		try {
 			if (DatabaseManager.DATA.isConnected()) {
-				String sql = "SELECT id FROM `users` WHEN username=? AND password=?";
-				PreparedStatement statement = DatabaseManager.DATA.getConnection().prepareStatement(sql);
-				statement.setString(0, username);
-				statement.setString(1, password);
-				ResultSet result = statement.executeQuery();
-				if (result.first()) {
+				String sql = "SELECT id FROM `users` WHERE `username`='" + username + "' AND `password`='" + password + "'";
+				Statement statement = DatabaseManager.DATA.getConnection().createStatement();
+				ResultSet result = statement.executeQuery(sql);
+				if (result.next()) {
 					return result.getInt("id");
 				}
 			}
 		} catch (SQLException exception) {
-			return -1;
+			exception.printStackTrace();
 		}
 		return -1;
 	}
