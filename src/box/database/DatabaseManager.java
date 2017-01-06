@@ -1,8 +1,9 @@
 package box.database;
 
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import box.database.sqlite.SQLite;
 import net.sociuris.logger.Logger;
@@ -13,9 +14,7 @@ public class DatabaseManager {
 	
 	private final Logger logger = Logger.getLogger();
 	
-	private DatabaseManager() {
-		
-	}
+	private DatabaseManager() { }
 	
 	public static DatabaseManager getManager() {
 		return manager;
@@ -43,25 +42,21 @@ public class DatabaseManager {
 	
 	public void initDatabase() {
 		try {
-			
-			
-			try {
-				SecureRandom.getInstance("SHA1PRNG");
-			} catch (NoSuchAlgorithmException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			
 			if (Database.web.checkConnection()) {
-				Database.web.querySQL(""
-						+ "CREATE TABLE web_session("
-						+ "session_id     CHAR(50)     PRIMARY KEY    NOT NULL,"
-						+ "session_ip     TEXT         NOT NULL,"
-						+ "session_date   DATETIME(6)  NOT NULL,"
-						+ ");");
+				String query = ""
+						+ "DROP TABLE IF EXISTS `web_session`;"
+						+ "CREATE TABLE IF NOT EXISTS `web_session` ("
+						+ "  `session_id` varchar(100) NOT NULL,"
+						+ "  `session_ip` varchar(16) NOT NULL,"
+						+ "  `session_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,"
+						+ "  PRIMARY KEY (`session_id`)"
+						+ ");";
+				Statement statement = Database.web.getConnection().createStatement();
+				Integer response = statement.executeUpdate(query);
+				statement.close();
+				System.out.println(": " + response);
 			}
-		} catch (SQLException | ClassNotFoundException exception) {
+		} catch (SQLException exception) {
 			exception.printStackTrace();
 		}
 	}
