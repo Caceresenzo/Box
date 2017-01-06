@@ -5,6 +5,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import box.database.sqlite.SQLite;
+
 /**
  * Abstract Database class, serves as a base for any connection method (MySQL, SQLite, etc.)
  * 
@@ -119,4 +121,14 @@ public abstract class Database {
 		return result;
 	}
 	
+	/*
+	 * DEFAULT DATABASE, SQLITE
+	 * Web, Data, ...
+	 */
+	public static Database web;
+	public static Database data;
+	public static void setupDefault() {
+		web = new SQLite("web.db");
+		data = new SQLite("data.db");
+	}
 }
