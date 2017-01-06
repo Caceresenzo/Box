@@ -36,8 +36,8 @@ public class DatabaseManager {
 
 			WEB.openConnection();
 			DATA.openConnection();
-		} catch (SQLException | ClassNotFoundException e) {
-			CrashReport.makeCrashReport("An error occurred while creating default databases!", e);
+		} catch (SQLException | ClassNotFoundException exception) {
+			CrashReport.makeCrashReport("An error occurred while creating default databases!", exception);
 		}
 	}
 
@@ -45,29 +45,33 @@ public class DatabaseManager {
 		try {
 			if (WEB.isConnected()) {
 				StringBuilder builder = new StringBuilder();
-				builder.append("DROP TABLE IF EXISTS 'web_sessions';");
-				builder.append("CREATE TABLE IF NOT EXISTS 'web_sessions' (");
-				builder.append("'session_id' varchar(255) NOT NULL,");
-				builder.append("'session_ip' varchar(16) NOT NULL,");
-				builder.append("'session_date' datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,");
-				builder.append("'session_token' varchar(100) NOT NULL,");
-				builder.append("PRIMARY KEY ('session_id')");
-				builder.append(");");
-				/*
-				 * String query = "" + "DROP TABLE IF EXISTS `web_session`;" +
-				 * "CREATE TABLE IF NOT EXISTS `web_session` (" +
-				 * "  `session_id` varchar(100) NOT NULL," +
-				 * "  `session_ip` varchar(16) NOT NULL," +
-				 * "  `session_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,"
-				 * + "  `session_token` varchar(100) NOT NULL," +
-				 * "  PRIMARY KEY (`session_id`)" + ");";
-				 */
-
+				builder
+					.append("DROP TABLE IF EXISTS `web_sessions`;")
+					.append("CREATE TABLE IF NOT EXISTS `web_sessions` (")
+					.append("  `session_id`     varchar(255)  NOT NULL,")
+					.append("  `session_ip`     varchar(16)   NOT NULL,")
+					.append("  `session_date`   datetime      NOT NULL DEFAULT CURRENT_TIMESTAMP,")
+					.append("  `session_token`  varchar(100)  NOT NULL,")
+					.append("  PRIMARY KEY (`session_id`)")
+					.append(");");
 				int response = WEB.executeUpdate(builder.toString());
 				logger.debug("Database response: %s", response);
 			}
-		} catch (SQLException e) {
-			CrashReport.makeCrashReport("An error occurred while initialize databases!", e);
+			if (DATA.isConnected()) {
+				StringBuilder builder = new StringBuilder();
+				builder
+					.append("CREATE TABLE IF NOT EXISTS `users` (")
+					.append("  `id`        INTEGER PRIMARY KEY AUTOINCREMENT,")
+					.append("  `username`  varchar(16)   NOT NULL,")
+					.append("  `password`  text          NOT NULL,")
+					.append("  `salt`      text          NOT NULL,")
+					.append("  `token`     varchar(100)  NOT NULL")
+					.append(");");
+				int response = DATA.executeUpdate(builder.toString());
+				logger.debug("Database response: %s", response);
+			}
+		} catch (SQLException exception) {
+			CrashReport.makeCrashReport("An error occurred while initialize databases!", exception);
 		}
 	}
 

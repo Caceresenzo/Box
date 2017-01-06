@@ -32,7 +32,7 @@ public class Database {
 	 */
 	public Connection openConnection() throws SQLException {
 		if (!isConnected())
-			connection = DriverManager.getConnection("jdbc:sqlite:" + Bootstrap.getWorkingDirectory() + "database/" + name + ".db");
+			connection = DriverManager.getConnection("jdbc:sqlite:" + Bootstrap.getWorkingDirectory() + "/database/" + name + ".db");
 		logger.debug("Opened database \"%s\" successfully", name);
 		return connection;
 	}
