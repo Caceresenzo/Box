@@ -10,7 +10,7 @@ import net.sociuris.logger.Logger;
 
 public class Database {
 
-	private final Logger logger  =Logger.getLogger();
+	private final Logger logger = Logger.getLogger();
 	private Connection connection;
 	private String name;
 
@@ -31,7 +31,7 @@ public class Database {
 	 */
 	public Connection openConnection() throws SQLException {
 		if (!isConnected())
-			connection = DriverManager.getConnection("jdbc:sqlite::resource:box/resources/database/" + name + ".db");
+			connection = DriverManager.getConnection("jdbc:sqlite:database/" + name + ".db");
 		logger.debug("Opened database \"%s\" successfully", name);
 		return connection;
 	}
@@ -67,14 +67,14 @@ public class Database {
 		logger.debug("Execute query \"%s\" to datase %s", query, name);
 		return statement.executeQuery(query);
 	}
-	
+
 	public void executeQuery(String query, DatabaseQueryResult queryResult) throws SQLException {
 		if (!isConnected())
 			openConnection();
 		Statement statement = connection.createStatement();
 		logger.debug("Execute query \"%s\" to datase %s", query, name);
 		ResultSet resultSet = statement.executeQuery(query);
-		while(resultSet.next())
+		while (resultSet.next())
 			queryResult.nextLine(resultSet);
 	}
 
@@ -114,9 +114,10 @@ public class Database {
 	public Connection getConnection() {
 		return connection;
 	}
-	
+
 	/**
 	 * Gets the name of database
+	 * 
 	 * @return the name
 	 */
 	public String getName() {
