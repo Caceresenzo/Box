@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 
 import box.minecraft.MinecraftServer;
 import box.minecraft.exception.ServerStopException;
+import box.web.WebPageApi;
 import box.web.WebPagePanel;
 import net.sociuris.configuration.ConfigurationFile;
 import net.sociuris.configuration.ConfigurationSection;
@@ -36,6 +37,7 @@ public class TheBox {
 		this.webSite.start();
 		
 		this.webSite.addPage(Pattern.compile("/?"), new WebPagePanel());
+		this.webSite.addPage(Pattern.compile("/api/(\\w)*"), new WebPageApi());
 
 		TheBox.instance = this;
 	}
