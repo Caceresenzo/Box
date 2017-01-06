@@ -18,4 +18,11 @@ public class FileUtils {
 		return extension.toLowerCase();
 	}
 	
+	public static void createDefaultDirectory(File directory) {
+		if(!directory.exists())
+			directory.mkdirs();
+		else if (!directory.isDirectory())
+			throw new RuntimeException(directory.getAbsolutePath() + " is not a valid directory!");
+	}
+	
 }
