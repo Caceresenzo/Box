@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import box.minecraft.exception.ServerStopException;
+import box.utils.FileUtils;
 import net.sociuris.configuration.ConfigurationFile;
 import net.sociuris.configuration.ConfigurationSection;
 import net.sociuris.crash.CrashReport;
@@ -41,8 +42,6 @@ public class Bootstrap {
 					break;
 				case "workingDirectory":
 					workingDirectory = new File(value);
-					if (!workingDirectory.exists())
-						workingDirectory.mkdirs();
 					break;
 				case "settingsFile":
 					settingsFile = value;
@@ -52,8 +51,17 @@ public class Bootstrap {
 				}
 			}
 
-			CrashReport.setDirectory(new File(workingDirectory, "crash-reports"));
-			LOGGER.setDirectory(new File(workingDirectory, "logs"));
+			FileUtils.createDefaultDirectory(workingDirectory);
+
+			File crashReportDir = new File(workingDirectory, "crash-reports");
+			File logsDir = new File(workingDirectory, "logs");
+
+			FileUtils.createDefaultDirectory(new File(workingDirectory, "database"));
+			FileUtils.createDefaultDirectory(crashReportDir);
+			FileUtils.createDefaultDirectory(logsDir);
+
+			CrashReport.setDirectory(crashReportDir);
+			LOGGER.setDirectory(logsDir);
 
 			final ConfigurationFile configurationFile = Bootstrap.loadProperties(settingsFile);
 			final TheBox theBox = new TheBox(configurationFile);
@@ -62,7 +70,6 @@ public class Bootstrap {
 				public void run() {
 					BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 					String line;
-
 					try {
 						while ((line = reader.readLine()) != null)
 							ConsoleHandler.handle(theBox, line.trim());
