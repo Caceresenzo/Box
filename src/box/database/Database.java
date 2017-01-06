@@ -130,15 +130,4 @@ public abstract class Database {
 	 */
 	public static Database web;
 	public static Database data;
-	public static void setupDefault() {
-		web = new SQLite("web.db");
-		data = new SQLite("data.db");
-		try {
-			web.openConnection();
-			data.openConnection();
-		} catch (ClassNotFoundException | SQLException exception) {
-			logger.error("An error occurred while creating default databases!");
-			logger.printStackTrace(exception);
-		}
-	}
 }
