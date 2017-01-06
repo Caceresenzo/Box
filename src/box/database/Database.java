@@ -1,150 +1,126 @@
 package box.database;
 
-import java.io.File;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import box.utils.FileUtils;
+import net.sociuris.logger.Logger;
 
-/**
- * Database class, serves as a base for any connection method (MySQL, SQLite, etc.)
- *
- * @author Enzo CACERES
- */
 public class Database {
-	protected Connection connection;
-	private final String dbLocation;
-	public String dbName;
-	
+
+	private final Logger logger  =Logger.getLogger();
+	private Connection connection;
+	private String name;
+
 	/**
-	 * Creates a new SQLite instance
-	 *
-	 * @param dbLocation Location of the Database (Must end in .db)
+	 * Create a new database with the given name
+	 * 
+	 * @param name
 	 */
-	public Database(String dbLocation) {
-		this.dbLocation = dbLocation;
-		this.dbName = dbLocation.replace(FileUtils.getExtension(dbLocation), "");
+	public Database(String name) {
+		this.name = name;
 	}
 
 	/**
-	 * Opens a connection with the database
+	 * Open a connection with the database
 	 * 
-	 * @return Opened connection
+	 * @return the connection
 	 * @throws SQLException
-	 *             if the connection can not be opened
-	 * @throws ClassNotFoundException
-	 *             if the driver cannot be found
 	 */
-	public Connection openConnection() throws SQLException, ClassNotFoundException {
-		if (checkConnection()) {
-			return connection;
-		}
-		
-		File dataFolder = new File("database/");
-		if (!dataFolder.exists()) {
-			dataFolder.mkdirs();
-		}
-		
-		File file = new File(dataFolder, dbLocation);
-		if (!(file.exists())) {
-			try {
-				file.createNewFile();
-			} catch (IOException e) {
-				System.out.println("Unable to create database!");
-			}
-		}
-		Class.forName("org.sqlite.JDBC");
-		connection = DriverManager.getConnection("jdbc:sqlite:" + dataFolder + "/" + dbLocation);
+	public Connection openConnection() throws SQLException {
+		if (!isConnected())
+			connection = DriverManager.getConnection("jdbc:sqlite::resource:box/resources/database/" + name + ".db");
+		logger.debug("Opened database \"%s\" successfully", name);
 		return connection;
 	}
 
 	/**
-	 * Checks if a connection is open with the database
+	 * Closes the connection
 	 * 
-	 * @return true if the connection is open
+	 * @return {@code true} if the connection is closed, {@code false} if
+	 *         already closed
 	 * @throws SQLException
-	 *             if the connection cannot be checked
 	 */
-	public boolean checkConnection() throws SQLException {
-		return connection != null && !connection.isClosed();
+	public boolean closeConnection() throws SQLException {
+		if (connection == null)
+			return false;
+		else {
+			logger.debug("Close database \"%s\" connection", name);
+			connection.close();
+			return true;
+		}
 	}
 
 	/**
-	 * Gets the connection with the database
+	 * Executes a SQL query (if this connection is closed, it will be opened)
 	 * 
-	 * @return Connection with the database, null if none
+	 * @param query
+	 * @return the result of the query
+	 * @throws SQLException
+	 */
+	public ResultSet executeQuery(String query) throws SQLException {
+		if (!isConnected())
+			openConnection();
+		Statement statement = connection.createStatement();
+		logger.debug("Execute query \"%s\" to datase %s", query, name);
+		return statement.executeQuery(query);
+	}
+	
+	public void executeQuery(String query, DatabaseQueryResult queryResult) throws SQLException {
+		if (!isConnected())
+			openConnection();
+		Statement statement = connection.createStatement();
+		logger.debug("Execute query \"%s\" to datase %s", query, name);
+		ResultSet resultSet = statement.executeQuery(query);
+		while(resultSet.next())
+			queryResult.nextLine(resultSet);
+	}
+
+	/**
+	 * Executes a SQL update (if this connection is closed, it will be opened)
+	 * 
+	 * @param query
+	 * @return Returns the line number updated by the statement or 0 if it
+	 *         returns nothing (see
+	 *         {@link java.sql.Statement#executeUpdate(String)})
+	 * @throws SQLException
+	 */
+	public int executeUpdate(String query) throws SQLException {
+		if (!isConnected())
+			openConnection();
+		Statement statement = connection.createStatement();
+		statement.closeOnCompletion();
+		logger.debug("Execute update \"%s\" to database %s", query, name);
+		return statement.executeUpdate(query);
+	}
+
+	/**
+	 * Checks if the connection is open with the database
+	 * 
+	 * @return {@code true} if the connection is open, {@code false} otherwise
+	 * @throws SQLException
+	 */
+	public boolean isConnected() throws SQLException {
+		return (connection != null && !connection.isClosed());
+	}
+
+	/**
+	 * Gets the connection of database
+	 * 
+	 * @return the connection or {@code null} if doesn't exist
 	 */
 	public Connection getConnection() {
 		return connection;
 	}
-
-	/**
-	 * Closes the connection with the database
-	 * 
-	 * @return true if successful
-	 * @throws SQLException
-	 *             if the connection cannot be closed
-	 */
-	public boolean closeConnection() throws SQLException {
-		if (connection == null) {
-			return false;
-		}
-		connection.close();
-		return true;
-	}
-
-	/**
-	 * Executes a SQL Query<br>
-	 * 
-	 * If the connection is closed, it will be opened
-	 * 
-	 * @param query
-	 *            Query to be run
-	 * @return the results of the query
-	 * @throws SQLException
-	 *             If the query cannot be executed
-	 * @throws ClassNotFoundException
-	 *             If the driver cannot be found; see {@link #openConnection()}
-	 */
-	public ResultSet querySQL(String query) throws SQLException, ClassNotFoundException {
-		if (!checkConnection()) {
-			openConnection();
-		}
-		
-		Statement statement = connection.createStatement();
-		
-		ResultSet result = statement.executeQuery(query);
-		
-		return result;
-	}
 	
 	/**
-	 * Executes an Update SQL Query<br>
-	 * See {@link java.sql.Statement#executeUpdate(String)}<br>
-	 * If the connection is closed, it will be opened
-	 * 
-	 * @param query
-	 *            Query to be run
-	 * @return Result Code, see {@link java.sql.Statement#executeUpdate(String)}
-	 * @throws SQLException
-	 *             If the query cannot be executed
-	 * @throws ClassNotFoundException
-	 *             If the driver cannot be found; see {@link #openConnection()}
+	 * Gets the name of database
+	 * @return the name
 	 */
-	public Integer updateSQL(String query) throws SQLException, ClassNotFoundException {
-		if (!checkConnection()) {
-			openConnection();
-		}
-		
-		Statement statement = connection.createStatement();
-		
-		Integer result = statement.executeUpdate(query);
-		
-		return result;
+	public String getName() {
+		return name;
 	}
-	
+
 }
