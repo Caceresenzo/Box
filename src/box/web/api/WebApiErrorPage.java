@@ -18,7 +18,7 @@ public class WebApiErrorPage implements WebApiPage {
 		jsonObj.addProperty("code", statusCode.getCode());
 		jsonObj.addProperty("error", statusCode.getName());
 		String message = statusCode.getMessage();
-		if (message != null)
+		if (!message.isEmpty())
 			jsonObj.addProperty("message", message);
 	}
 
