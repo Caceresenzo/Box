@@ -13,13 +13,16 @@ public class Test {
 	private static File workingDirectory = new File(System.getProperty("user.dir", "."));
 
 	public static void main(String[] args) {
-Logger.getLogger().setDebug(true);
+		Logger.getLogger().setDebug(true);
+
 		CrashReport.setDirectory(new File(workingDirectory, "crash-reports"));
 		Logger.getLogger().setDirectory(new File(workingDirectory, "logs"));
+
 		dbmanager.loadDatabase();
 		dbmanager.initDatabase();
 		try {
-			DatabaseManager.WEB.executeUpdate("INSERT INTO 'web_sessions' ('session_id', 'session_ip', 'session_token') VALUES ('key', '90.19.73.219', 'gfe54546e4')");
+			DatabaseManager.WEB.executeUpdate(
+					"INSERT INTO 'web_sessions' ('session_id', 'session_ip', 'session_token') VALUES ('key', '90.19.73.219', 'gfe54546e4')");
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
@@ -28,10 +31,9 @@ Logger.getLogger().setDebug(true);
 			DatabaseManager.WEB.closeConnection();
 			DatabaseManager.DATA.closeConnection();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		Logger.getLogger().info("IT WORKS!");
 	}
 
