@@ -42,6 +42,7 @@ public class Bootstrap {
 					break;
 				case "workingDirectory":
 					workingDirectory = new File(value);
+					System.setProperty("user.dir", workingDirectory.getAbsolutePath());
 					break;
 				case "settingsFile":
 					settingsFile = value;
