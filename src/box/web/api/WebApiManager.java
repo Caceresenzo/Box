@@ -21,10 +21,10 @@ public class WebApiManager {
 	private final WebApiErrorPage errorPage = new WebApiErrorPage();
 
 	public WebApiManager() {
-		this.webPageMap.put(Pattern.compile("/status"), new WebApiPageStatus());
+		this.webPageMap.put(Pattern.compile("/(status)?"), new WebApiPageStatus());
 	}
 
-	public String handleConnection(WebSite webSite, HttpRequest request, HttpResponse response) {
+	public String handleConnection(WebSite webSite, Matcher uriMatcher, HttpRequest request, HttpResponse response) {
 		String requestUri = request.getRequestedUri().substring(4);
 		Matcher lastMatcher = null;
 		WebApiPage webPage = null;
@@ -44,7 +44,7 @@ public class WebApiManager {
 		responseHeader.setCharset(StandardCharsets.UTF_8);
 
 		JsonObject jsonObj = new JsonObject();
-		webPage.writePageContent(webSite, request, response, jsonObj);
+		webPage.writePageContent(webSite, uriMatcher, request, response, jsonObj);
 		return jsonObj.toString();
 
 	}

@@ -1,6 +1,7 @@
 package box.web;
 
 import java.nio.charset.StandardCharsets;
+import java.util.regex.Matcher;
 
 import net.sociuris.http.HttpCookie;
 import net.sociuris.http.HttpRequest;
@@ -11,7 +12,7 @@ import net.sociuris.web.WebSite;
 public class WebPagePanel implements WebPage {
 
 	@Override
-	public String writePageContent(WebSite webSite, HttpRequest request, HttpResponse response) {
+	public String writePageContent(WebSite webSite, Matcher uriMatcher, HttpRequest request, HttpResponse response) {
 		StringBuilder builder = new StringBuilder();
 		builder.append("<!DOCTYPE html>");
 		builder.append("<html>");
