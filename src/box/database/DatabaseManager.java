@@ -1,16 +1,16 @@
-package box.database.sqlite;
+package box.database;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import box.database.Database;
 import box.database.mysql.MySQL;
+import box.database.sqlite.SQLite;
 
 /**
  * 
  * @author Enzo CACERES
  */
-public class SQLiteManager {
+public class DatabaseManager {
 	
 	private static List<Database> databases = new ArrayList<Database>();
 	
