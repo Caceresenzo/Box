@@ -35,8 +35,6 @@ public class Bootstrap {
 						value = splitArg[1];
 				}
 
-				LOGGER.debug("arg[key=%s,value=%s]", key, value);
-
 				switch (key) {
 				case "debug":
 					LOGGER.setDebug(true);
@@ -50,10 +48,12 @@ public class Bootstrap {
 					settingsFile = value;
 					break;
 				default:
-					LOGGER.debug("Invalid argument: %s", arg);
 					break;
 				}
 			}
+
+			CrashReport.setDirectory(new File(workingDirectory, "crash-reports"));
+			LOGGER.setDirectory(new File(workingDirectory, "logs"));
 
 			final ConfigurationFile configurationFile = Bootstrap.loadProperties(settingsFile);
 			final TheBox theBox = new TheBox(configurationFile);
