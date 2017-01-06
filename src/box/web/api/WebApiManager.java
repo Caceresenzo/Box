@@ -22,6 +22,8 @@ public class WebApiManager {
 
 	public WebApiManager() {
 		this.webPageMap.put(Pattern.compile("/(status)?"), new WebApiPageStatus());
+		//
+		this.webPageMap.put(Pattern.compile("/_"), new WebApiPageTest());
 	}
 
 	public String handleConnection(WebSite webSite, Matcher uriMatcher, HttpRequest request, HttpResponse response) {

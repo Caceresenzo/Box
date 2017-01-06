@@ -1,5 +1,4 @@
 /bin/
 settings.json
-.classpath
-.project
-/workingDirectory/
+*.classpath
+*.project
