@@ -23,7 +23,7 @@ public class WebPagePanel implements WebPage {
 		builder.append("<h1>Cookies</h1>");
 		builder.append("<h2 onClick=\"createCookie()\">Créer un cookie</h2>");
 		builder.append("<h2>Vos cookies:</h2>");
-		builder.append("<p>(Liste générée en Java)</p>>");
+		builder.append("<p>(Liste générée en Java)</p>");
 		builder.append("<ul>");
 		for (HttpCookie cookie : request.getHeader().getCookies())
 			builder.append("<li>" + cookie.getName() + "=" + cookie.getValue() + "</li>");
