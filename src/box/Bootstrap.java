@@ -16,6 +16,10 @@ public class Bootstrap {
 
 	private static final Logger LOGGER = Logger.getLogger();
 	private static File workingDirectory = new File(System.getProperty("user.dir", "."));
+	
+	public static File getWorkingDirectory() {
+		return workingDirectory;
+	}
 
 	public static void main(String[] args) {
 		try {
@@ -42,7 +46,6 @@ public class Bootstrap {
 					break;
 				case "workingDirectory":
 					workingDirectory = new File(value);
-					System.setProperty("user.dir", workingDirectory.getAbsolutePath());
 					break;
 				case "settingsFile":
 					settingsFile = value;

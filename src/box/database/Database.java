@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import box.Bootstrap;
 import net.sociuris.logger.Logger;
 
 public class Database {
@@ -31,7 +32,7 @@ public class Database {
 	 */
 	public Connection openConnection() throws SQLException {
 		if (!isConnected())
-			connection = DriverManager.getConnection("jdbc:sqlite:database/" + name + ".db");
+			connection = DriverManager.getConnection("jdbc:sqlite:" + Bootstrap.getWorkingDirectory() + "database/" + name + ".db");
 		logger.debug("Opened database \"%s\" successfully", name);
 		return connection;
 	}
