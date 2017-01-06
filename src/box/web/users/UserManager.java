@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import box.database.Databases;
+import box.database.DatabaseManager;
 
 public class UserManager {
 	
@@ -34,9 +34,9 @@ public class UserManager {
 	
 	public Integer checkUser(String username, String password) {
 		try {
-			if (Databases.web.checkConnection()) {
+			if (DatabaseManager.DATA.isConnected()) {
 				String sql = "SELECT id FROM `users` WHEN username=? AND password=?";
-				PreparedStatement statement = Databases.data.getConnection().prepareStatement(sql);
+				PreparedStatement statement = DatabaseManager.DATA.getConnection().prepareStatement(sql);
 				statement.setString(0, username);
 				statement.setString(1, password);
 				ResultSet result = statement.executeQuery();
