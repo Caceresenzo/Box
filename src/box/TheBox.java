@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 
 import box.minecraft.MinecraftServer;
 import box.minecraft.exception.ServerStopException;
-import box.web.WebPageLogin;
+import box.web.WebPagePanel;
 import net.sociuris.configuration.ConfigurationFile;
 import net.sociuris.configuration.ConfigurationSection;
 import net.sociuris.web.WebSite;
@@ -35,7 +35,7 @@ public class TheBox {
 				webServerSection.getProperty("port").getAsInteger());
 		this.webSite.start();
 		
-		this.webSite.addPage(Pattern.compile("/?"), new WebPageLogin());
+		this.webSite.addPage(Pattern.compile("/?"), new WebPagePanel());
 
 		TheBox.instance = this;
 	}

@@ -6,7 +6,7 @@ import net.sociuris.http.HttpResponse;
 import net.sociuris.web.WebPage;
 import net.sociuris.web.WebSite;
 
-public class WebPageLogin implements WebPage {
+public class WebPagePanel implements WebPage {
 
 	@Override
 	public String writePageContent(WebSite webSite, HttpRequest request, HttpResponse response) {
