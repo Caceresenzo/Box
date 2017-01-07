@@ -1,6 +1,7 @@
 package box.utils;
 
 import java.io.File;
+import java.io.IOException;
 
 public class FileUtils {
 	
@@ -19,10 +20,29 @@ public class FileUtils {
 	}
 	
 	public static void createDefaultDirectory(File directory) {
-		if(!directory.exists())
+		if(!directory.exists()) {
 			directory.mkdirs();
-		else if (!directory.isDirectory())
+		} else if (!directory.isDirectory()) {
 			throw new RuntimeException(directory.getAbsolutePath() + " is not a valid directory!");
+		}
+	}
+	
+	public static boolean createDirectoryIfNotExists(File file) {
+		if (!file.exists()) {
+			return file.mkdirs();
+		}
+		return false;
+	}
+	
+	public static boolean createFileIfNoteExists(File file) {
+		if (!file.exists()) {
+			try {
+				return file.createNewFile();
+			} catch (IOException exception) {
+				exception.printStackTrace();
+			}
+		}
+		return false;
 	}
 	
 }
