@@ -23,7 +23,7 @@ public class MinecraftServer {
 	private final Logger logger = Logger.getLogger();
 	private final Runtime runtime = Runtime.getRuntime();
 	
-	private final Integer port;
+	private final Short port;
 	private final String name;
 	private final String jarFile;
 	
@@ -45,7 +45,7 @@ public class MinecraftServer {
 	 * @param owner
 	 * @param operators
 	 */
-	protected MinecraftServer(TheBox theBox, Integer port, String name, String jarFile, String owner, List<String> operators) {
+	protected MinecraftServer(TheBox theBox, Short port, String name, String jarFile, String owner, List<String> operators) {
 		this.port = port;
 		this.name = name;
 		this.jarFile = jarFile;
@@ -56,7 +56,7 @@ public class MinecraftServer {
 	/**
 	 * Create a new Instance but without the Operators
 	 */
-	protected MinecraftServer(TheBox theBox, Integer port, String name, String jarFile, String owner) {
+	protected MinecraftServer(TheBox theBox, Short port, String name, String jarFile, String owner) {
 		this(theBox, port, owner, owner, owner, new ArrayList<String>());
 	}
 	
@@ -171,7 +171,7 @@ public class MinecraftServer {
 	 * 
 	 * @return Server's port
 	 */
-	public Integer getPort() {
+	public Short getPort() {
 		return port;
 	}
 	
