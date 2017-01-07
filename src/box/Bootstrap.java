@@ -1,16 +1,11 @@
 package box;
 
-import java.awt.Desktop;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import box.gui.TheBoxGui;
-import box.minecraft.ServerManager;
-import box.minecraft.exception.ServerStopException;
 import box.utils.FileUtils;
-import javafx.application.Application;
 import net.sociuris.configuration.ConfigurationFile;
 import net.sociuris.configuration.ConfigurationSection;
 import net.sociuris.crash.CrashReport;
@@ -73,7 +68,6 @@ public class Bootstrap {
 
 			final ConfigurationFile configurationFile = Bootstrap.loadProperties(settingsFile);
 			final TheBox theBox = new TheBox(configurationFile);
-			final ServerManager serverManager = ServerManager.getManager();
 
 			Thread consoleHandlerThread = new Thread("Console handler") {
 				public void run() {
@@ -94,17 +88,13 @@ public class Bootstrap {
 				@Override
 				public void run() {
 					try {
-						LOGGER.info("Stopping...");
-						serverManager.stopServers();
-						configurationFile.save();
-					} catch (IOException | ServerStopException e) {
-						LOGGER.error("Unable to stop TheBox: %s", e.getLocalizedMessage());
+						theBox.stop();
+					} catch (Exception e) {
+						CrashReport.makeCrashReport("Unable to stop correctly TheBox", e);
 					}
 				}
 			});
 
-			if (configurationFile.getProperty("useGui").getAsBoolean() && Desktop.isDesktopSupported())
-				Application.launch(TheBoxGui.class);
 		} catch (IOException e) {
 			CrashReport.makeCrashReport("Unable to start TheBox!", e);
 		}
