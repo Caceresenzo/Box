@@ -12,7 +12,7 @@ public class ServerManager {
 	
 	public List<MinecraftServer> servers = new ArrayList<MinecraftServer>();
 	
-	public ServerManager() {
+	private ServerManager() {
 		if (checkList()) {
 			for (MinecraftServer server : servers) {
 				try {
