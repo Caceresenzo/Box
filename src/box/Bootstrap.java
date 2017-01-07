@@ -1,12 +1,15 @@
 package box;
 
+import java.awt.Desktop;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import box.gui.TheBoxGui;
 import box.minecraft.exception.ServerStopException;
 import box.utils.FileUtils;
+import javafx.application.Application;
 import net.sociuris.configuration.ConfigurationFile;
 import net.sociuris.configuration.ConfigurationSection;
 import net.sociuris.crash.CrashReport;
@@ -16,7 +19,7 @@ public class Bootstrap {
 
 	private static final Logger LOGGER = Logger.getLogger();
 	private static File workingDirectory = new File(System.getProperty("user.dir", "."));
-	
+
 	public static File getWorkingDirectory() {
 		return workingDirectory;
 	}
@@ -97,6 +100,9 @@ public class Bootstrap {
 					}
 				}
 			});
+
+			if (configurationFile.getProperty("useGui").getAsBoolean() && Desktop.isDesktopSupported())
+				Application.launch(TheBoxGui.class);
 		} catch (IOException e) {
 			CrashReport.makeCrashReport("Unable to start TheBox!", e);
 		}
@@ -108,6 +114,7 @@ public class Bootstrap {
 			settingsFile.createNewFile();
 
 		final ConfigurationFile settings = new ConfigurationFile(settingsFile);
+		settings.addDefaultProperty("useGui", true);
 
 		final ConfigurationSection minecraftServerSection = settings.getSection("minecraftServer");
 		minecraftServerSection.addDefaultProperty("javaPath", System.getProperty("java.home"));
