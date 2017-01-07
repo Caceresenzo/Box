@@ -20,6 +20,7 @@ public class Test {
 	private static final Logger logger = Logger.getLogger();
 
 	private static DatabaseManager dbmanager = DatabaseManager.getManager();
+	private static UserManager usermanager = UserManager.getManager();
 	private static File workingDirectory = new File(System.getProperty("user.dir", "."));
 
 	public static void main(String[] args) throws IOException {
@@ -50,7 +51,6 @@ public class Test {
 		 * 
 		 */
 		User user = new User("enzo", "pass");
-		UserManager usermanager = UserManager.getManager();
 		Logger.getLogger().info(":: " + user.getId() + " ::::: " + usermanager.checkUser("enezo", "paess"));
 		
 		ServerManager servermanager = ServerManager.getManager();

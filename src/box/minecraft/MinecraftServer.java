@@ -20,7 +20,7 @@ import net.sociuris.configuration.ConfigurationSection;
 import net.sociuris.logger.Logger;
 
 public class MinecraftServer {
-	
+
 	private static final String startCommand = getStartCommand();
 
 	private static String getStartCommand() {
@@ -37,29 +37,26 @@ public class MinecraftServer {
 	}
 
 	private final Logger logger = Logger.getLogger();
-	// private final TheBox theBox;
 	private final String name;
 	private final String jarFile;
-	
+
 	private final Runtime runtime = Runtime.getRuntime();
 
 	private final List<String> logs = new ArrayList<String>();
 
 	private Process process;
 	private PrintWriter writer;
-	
 
 	private String owner;
 	private String[] subowner;
-	
+
 	public MinecraftServer(TheBox theBox, String name, String jarFile, String owner, String[] subowner) {
 		this.name = name;
-		// this.theBox = theBox;
 		this.jarFile = jarFile;
 		this.owner = owner;
 		this.subowner = subowner;
 	}
-	
+
 	public MinecraftServer(TheBox theBox, String name, String jarFile, String owner) {
 		this(theBox, owner, owner, owner, null);
 	}
@@ -67,10 +64,13 @@ public class MinecraftServer {
 	public void start(String additionalArguments) throws Exception {
 		if (!isStarted()) {
 			Integer port = RandomUtils.getRandomInt(25500, 25600);
-			String finishedStartCommand = MinecraftServer.startCommand.replace("%{JAR_FILE_NAME}", jarFile) + additionalArguments + " --port " + port;
+			String finishedStartCommand = MinecraftServer.startCommand.replace("%{JAR_FILE_NAME}", jarFile)
+					+ additionalArguments + " --port " + port;
 			System.out.println(":: " + finishedStartCommand + "\n PORT: " + port);
-			//ProcessBuilder processBuilder = new ProcessBuilder(finishedStartCommand);
-			File serverWorkingDirectory = new File(Bootstrap.getWorkingDirectory().getAbsolutePath() + "\\servers\\" + port);
+			// ProcessBuilder processBuilder = new
+			// ProcessBuilder(finishedStartCommand);
+			File serverWorkingDirectory = new File(
+					Bootstrap.getWorkingDirectory().getAbsolutePath() + "\\servers\\" + port);
 			File serverEulaFile = new File(serverWorkingDirectory.getAbsolutePath() + "\\eula.txt");
 			FileUtils.createDirectoryIfNotExists(serverWorkingDirectory);
 			if (!serverEulaFile.exists()) {
@@ -79,7 +79,7 @@ public class MinecraftServer {
 				writer.write("eula=true");
 				writer.close();
 			}
-			Process process = runtime.exec(finishedStartCommand, new String[]{""}, serverWorkingDirectory);
+			Process process = runtime.exec(finishedStartCommand, new String[] { "" }, serverWorkingDirectory);
 			logger.debug("Starting server %s...", name);
 			this.process = process;
 			this.writer = new PrintWriter(process.getOutputStream());
@@ -111,8 +111,7 @@ public class MinecraftServer {
 				this.kill();
 				throw new ServerStopException(e.getLocalizedMessage());
 			}
-		}
-		else
+		} else
 			return -1;
 	}
 
@@ -143,11 +142,11 @@ public class MinecraftServer {
 	public String getName() {
 		return name;
 	}
-	
+
 	public String getOwner() {
 		return owner;
 	}
-	
+
 	public String[] getSubOwner() {
 		return subowner;
 	}
