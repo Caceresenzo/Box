@@ -28,7 +28,7 @@ public class ServerManager {
 		}
 	}
 
-	public MinecraftServer createServer(String name, Short port, String jarFilePath, String owner, List<String> operators) {
+	public MinecraftServer createServer(String name, int port, String jarFilePath, String owner, List<String> operators) {
 		if (port == -1 || port < 1 || port > 65534) {
 			port = NetUtils.getAvailablePort();
 		}

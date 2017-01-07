@@ -12,6 +12,7 @@ import box.Bootstrap;
 import box.TheBox;
 import box.minecraft.exception.ServerStopException;
 import box.minecraft.exception.StartServerException;
+import box.minecraft.text.TextComponent;
 import box.utils.FileUtils;
 import net.sociuris.configuration.ConfigurationSection;
 import net.sociuris.logger.Logger;
@@ -23,7 +24,7 @@ public class MinecraftServer {
 	private final Logger logger = Logger.getLogger();
 	private final Runtime runtime = Runtime.getRuntime();
 	
-	private final Short port;
+	private final int port;
 	private final String name;
 	private final String jarFile;
 	
@@ -45,7 +46,7 @@ public class MinecraftServer {
 	 * @param owner
 	 * @param operators
 	 */
-	protected MinecraftServer(TheBox theBox, Short port, String name, String jarFile, String owner, List<String> operators) {
+	protected MinecraftServer(TheBox theBox, int port, String name, String jarFile, String owner, List<String> operators) {
 		this.port = port;
 		this.name = name;
 		this.jarFile = jarFile;
@@ -56,7 +57,7 @@ public class MinecraftServer {
 	/**
 	 * Create a new Instance but without the Operators
 	 */
-	protected MinecraftServer(TheBox theBox, Short port, String name, String jarFile, String owner) {
+	protected MinecraftServer(TheBox theBox, int port, String name, String jarFile, String owner) {
 		this(theBox, port, owner, owner, owner, new ArrayList<String>());
 	}
 	
@@ -120,7 +121,7 @@ public class MinecraftServer {
 	}
 	
 	/**
-	 * Send a command to the Server
+	 * Send a command to the server
 	 * 
 	 * @param command
 	 */
@@ -130,17 +131,22 @@ public class MinecraftServer {
 	}
 	
 	/**
-	 * Send a message to the Server
+	 * Send a message to the server
 	 * 
 	 * @param message
 	 */
 	public void sendMessage(String message) {
-		writer.println("tell @a [Box]" + message);
+		writer.println("tellraw @a [{\"text\":\"TheBox\",\"color\":\"white\"},{\"text\":\" > \",\"color\":\"gray\"},{\"text\":\"" + message + "\",\"color\":\"white\"}]");
+		writer.flush();
+	}
+	
+	public void sendFormattedMessage(TextComponent textComponent) {
+		writer.println("tellraw @a " + textComponent.toJsonObject().toString());
 		writer.flush();
 	}
 	
 	/**
-	 * Send the Server's Output to the console
+	 * Send the server output to the console
 	 * 
 	 * @param log
 	 */
@@ -151,43 +157,43 @@ public class MinecraftServer {
 	}
 	
 	/**
-	 * Destroy the Server's Process
+	 * Destroy the server process
 	 */
 	public void kill() {
 		process.destroy();
 	}
 	
 	/**
-	 * Check if Server is started
+	 * Check if server is started
 	 * 
-	 * @return Return if the Server is started
+	 * @return {@code true} if the server is started, {@code false} otherwise
 	 */
 	public Boolean isStarted() {
 		return (process != null) ? process.isAlive() : false;
 	}
 	
 	/**
-	 * Get the Server's Port
+	 * Get the server's port
 	 * 
-	 * @return Server's port
+	 * @return The server's port
 	 */
-	public Short getPort() {
+	public int getPort() {
 		return port;
 	}
 	
 	/**
-	 * Get the Server's Name
+	 * Get the name of the server
 	 * 
-	 * @return Server's name
+	 * @return server's name
 	 */
 	public String getName() {
 		return name;
 	}
 	
 	/**
-	 * Get the Server's Owner
+	 * Get the server's owner
 	 * 
-	 * @return Owner's name
+	 * @return owner's name
 	 */
 	public String getOwner() {
 		return owner;
