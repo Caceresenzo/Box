@@ -1,6 +1,6 @@
 package box.web.users;
 
-public class SimpleUser {
+public class User {
 	
 	private UserManager manager = UserManager.getManager();
 	
@@ -12,7 +12,7 @@ public class SimpleUser {
 	private Boolean checked = false;
 	private Boolean valid = false;
 	
-	public SimpleUser(String username, String password) {
+	public User(String username, String password) {
 		this.id = -1;
 		this.username = username;
 		this.password = password;

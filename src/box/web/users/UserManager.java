@@ -12,7 +12,7 @@ public class UserManager {
 	
 	private static UserManager manager = new UserManager();
 	
-	private List<SimpleUser> users = new ArrayList<SimpleUser>();
+	private List<User> users = new ArrayList<User>();
 	
 	private UserManager() {
 		users.clear();
@@ -22,9 +22,9 @@ public class UserManager {
 		return manager;
 	}
 	
-	public SimpleUser getUserByName(String name) {
+	public User getUserByName(String name) {
 		if (users.isEmpty()) return null;
-		for (SimpleUser user : users) {
+		for (User user : users) {
 			if (user.getUsername().equals(name)) {
 				return user;
 			}
