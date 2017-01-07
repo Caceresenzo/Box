@@ -21,9 +21,9 @@ import net.sociuris.logger.Logger;
 
 public class MinecraftServer {
 	
-	private static String startCommand = "";
+	private static final String startCommand = getStartCommand();
 
-	static {
+	private static String getStartCommand() {
 		ConfigurationSection mcServerSection = TheBox.PROPERTIES.getSection("minecraftServer");
 		final String lineSeparator = File.separator;
 		StringBuilder builder = new StringBuilder();
@@ -33,7 +33,7 @@ public class MinecraftServer {
 		builder.append(" " + mcServerSection.getProperty("jvmArguments").getAsString()).append(' ');
 		builder.append("-jar \"%{JAR_FILE_NAME}\"").append(' ');
 		builder.append("" + mcServerSection.getProperty("additionalArguments").getAsString()).append(' ');
-		startCommand = builder.toString();
+		return builder.toString();
 	}
 
 	private final Logger logger = Logger.getLogger();
@@ -111,8 +111,9 @@ public class MinecraftServer {
 				this.kill();
 				throw new ServerStopException(e.getLocalizedMessage());
 			}
-		} else
-			throw new ServerStopException("Server is not started");
+		}
+		else
+			return -1;
 	}
 
 	public void sendCommand(String command) {
