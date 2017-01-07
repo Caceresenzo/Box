@@ -14,5 +14,12 @@ public class RandomUtils {
 		}
 		return result.toString();
 	}
-
+	
+	public static Integer getRandomInt(Integer min, Integer max) {
+		return getRandomInt(min, max, new Random());
+	}
+	
+	public static Integer getRandomInt(Integer min, Integer max, Random random) {
+		return random.nextInt(max - min) + min;
+	}
 }
