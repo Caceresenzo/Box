@@ -16,6 +16,7 @@ import net.sociuris.web.WebSite;
 public class TheBox {
 
 	public static final String VERSION = "0.1b";
+	public static ConfigurationFile PROPERTIES = null;
 
 	private static TheBox instance;
 
@@ -24,12 +25,11 @@ public class TheBox {
 	}
 
 	// private final Logger logger = Logger.getLogger();
-	private final ConfigurationFile settings;
 	private final WebSite webSite;
 	private final Map<String, MinecraftServer> minecraftServerMap = new HashMap<String, MinecraftServer>();
 
 	public TheBox(ConfigurationFile configurationFile) {
-		this.settings = configurationFile;
+		TheBox.PROPERTIES = configurationFile;
 
 		ConfigurationSection webServerSection = configurationFile.getSection("webServer");
 		this.webSite = new WebSite(webServerSection.getProperty("ipAddress").getAsString(),
@@ -60,10 +60,6 @@ public class TheBox {
 		MinecraftServer minecraftServer = new MinecraftServer(this, name, jarFile);
 		minecraftServerMap.put(minecraftServer.getName(), minecraftServer);
 		return minecraftServer;
-	}
-
-	public ConfigurationFile getSettings() {
-		return settings;
 	}
 
 	public WebSite getWebSite() {
