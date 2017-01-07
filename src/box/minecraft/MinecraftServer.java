@@ -18,7 +18,7 @@ public class MinecraftServer {
 	private static String startCommand = "";
 
 	static {
-		ConfigurationSection mcServerSection = TheBox.get().getSettings().getSection("minecraftServer");
+		ConfigurationSection mcServerSection = TheBox.PROPERTIES.getSection("minecraftServer");
 		final String lineSeparator = System.lineSeparator();
 		StringBuilder builder = new StringBuilder();
 		builder.append(mcServerSection.getProperty("javaPath").getAsString()).append(lineSeparator);
