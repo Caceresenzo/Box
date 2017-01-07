@@ -41,9 +41,8 @@ public class TheBox {
 
 		if (configurationFile.getProperty("useGui").getAsBoolean() || System.console() == null) {
 			this.boxGui = TheBoxGui.createGui();
-			if(!TheBoxGui.hasGui()) {
+			if(!TheBoxGui.hasGui())
 				logger.warn("You try to show the GUI but you system doesn't support it!");
-			}
 		} else {
 			this.boxGui = null;
 		}

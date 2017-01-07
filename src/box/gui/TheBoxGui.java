@@ -25,7 +25,7 @@ public class TheBoxGui extends Application {
 
 	private final TheBoxWebBrowser webBrowser = new TheBoxWebBrowser();
 
-	private TheBoxGui() {
+	public TheBoxGui() {
 		TheBoxGui.instance = this;
 	}
 
