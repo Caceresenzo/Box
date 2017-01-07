@@ -1,5 +1,10 @@
 package box.web.users;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import box.minecraft.MinecraftServer;
+
 public class User {
 	
 	private UserManager manager = UserManager.getManager();
@@ -9,6 +14,8 @@ public class User {
 	private String password;
 	private UserLevel level;
 	
+	private List<MinecraftServer> ownerServer;
+	
 	private Boolean checked = false;
 	private Boolean valid = false;
 	
@@ -17,6 +24,8 @@ public class User {
 		this.username = username;
 		this.password = password;
 		this.level = UserLevel.UNKNOWN;
+		
+		ownerServer = new ArrayList<MinecraftServer>();
 		
 		check();
 	}
@@ -48,5 +57,9 @@ public class User {
 	
 	public Boolean isValid() {
 		return this.valid;
+	}
+	
+	public List<MinecraftServer> getOwnerServer() {
+		return this.ownerServer;
 	}
 }

@@ -6,13 +6,19 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import box.database.Database;
 import box.database.DatabaseManager;
+import net.sociuris.logger.Logger;
 
 public class UserManager {
+	
+	private static final Logger logger = Logger.getLogger();
 	
 	private static UserManager manager = new UserManager();
 	
 	private List<User> users = new ArrayList<User>();
+	
+	private Boolean registered = false;
 	
 	private UserManager() {
 		users.clear();
@@ -46,6 +52,14 @@ public class UserManager {
 			exception.printStackTrace();
 		}
 		return -1;
+	}
+	
+	public boolean addUser(User user) {
+		if (user != null && !users.contains(user)) {
+			logger.debug("Registered User : " + user.getUsername());
+			return users.add(user);
+		}
+		return false;
 	}
 	
 }
