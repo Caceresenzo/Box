@@ -1,62 +1,59 @@
 package box.utils;
 
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import net.sociuris.logger.Logger;
+
 public class FileUtils {
-	
-	public static String getExtension(String file) {
-		return getExtension(new File(file));
+
+	private static final Logger LOGGER = Logger.getLogger();
+
+	private FileUtils() {
 	}
-	
+
 	public static String getExtension(File file) {
-		String extension = "";
-		String filename = file.getName();
-		Integer dotpPosition = filename.lastIndexOf(".");
-		if (dotpPosition >= 0) {
-			extension = filename.substring(dotpPosition);
-		}
-		return extension.toLowerCase();
+		return FileUtils.getExtension(file.getName());
 	}
-	
-	public static Boolean createDefaultDirectory(File directory) {
-		if(!directory.exists()) {
+
+	public static String getExtension(String fileName) {
+		String extension = null;
+		int dotPosition = fileName.lastIndexOf(".");
+		if (dotPosition != -1)
+			extension = fileName.substring(dotPosition);
+		return extension;
+	}
+
+	public static boolean createDefaultDirectory(File directory) {
+		if (!directory.exists())
 			return directory.mkdirs();
-		} else if (!directory.isDirectory()) {
-			throw new RuntimeException(directory.getAbsolutePath() + " is not a valid directory!");
-		}
 		return false;
 	}
-	
-	public static Boolean createDefaultFile(File file) {
+
+	public static boolean createDefaultFile(File file) {
 		if (!file.exists()) {
 			try {
 				return file.createNewFile();
-			} catch (IOException exception) {
-				exception.printStackTrace();
+			} catch (IOException e) {
+				LOGGER.printStackTrace(e);
 			}
-		} else if (!file.isFile()) {
-			throw new RuntimeException(file.getAbsolutePath() + " is not a valid file!");
 		}
 		return false;
 	}
-	
-	public static Boolean writeInFile(File file, String[] text) {
-		createDefaultFile(file);
-		BufferedWriter writer;
+
+	public static boolean writeInFile(File file, String... texts) {
+		FileUtils.createDefaultFile(file);
 		try {
-			writer = new BufferedWriter(new FileWriter(file));
-			for (String line : text) {
-				writer.write(line);
-			}
-			writer.close();
+			FileWriter fileWriter = new FileWriter(file);
+			for (String text : texts)
+				fileWriter.write(text);
+			fileWriter.close();
 			return true;
-		} catch (IOException exception) {
-			exception.printStackTrace();
+		} catch (IOException e) {
+			LOGGER.printStackTrace(e);
 			return false;
 		}
 	}
-	
+
 }
