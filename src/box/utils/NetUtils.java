@@ -6,39 +6,30 @@ import java.net.ServerSocket;
 import box.TheBox;
 
 public class NetUtils {
-	
-	public static Short getAvailablePort() {
-		short port = -1;
+
+	private NetUtils() {
+	}
+
+	public static int getAvailablePort() {
+		int port = -1;
 		do {
 			try {
-				port = (short) TheBox.RANDOM.nextInt(65534);
-				ServerSocket serverSocket = new ServerSocket(port);
-				serverSocket.close();
+				port = (TheBox.RANDOM.nextInt(65533) + 1);
+				new ServerSocket(port).close();
 			} catch (IOException e) {
 				port = -1;
 			}
 		} while (port == -1);
 		return port;
 	}
-	
-	public static Boolean isPortOpen(Integer port) {
-		ServerSocket socket = null;
+
+	public static boolean isLocalPortFree(int port) {
 		try {
-			socket = new ServerSocket(port);
-			socket.setReuseAddress(true);
+			new ServerSocket(port).close();
 			return true;
-		} catch (IOException exception) {
-			exception.printStackTrace();
-		} finally {
-			if (socket != null) {
-				try {
-					socket.close();
-				} catch (IOException exception0) {
-					exception0.printStackTrace();
-				}
-			}
+		} catch (IOException e) {
+			return false;
 		}
-		return false;
 	}
-	
+
 }
