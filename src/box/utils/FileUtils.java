@@ -1,6 +1,8 @@
 package box.utils;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 
 public class FileUtils {
@@ -19,30 +21,42 @@ public class FileUtils {
 		return extension.toLowerCase();
 	}
 	
-	public static void createDefaultDirectory(File directory) {
+	public static Boolean createDefaultDirectory(File directory) {
 		if(!directory.exists()) {
-			directory.mkdirs();
+			return directory.mkdirs();
 		} else if (!directory.isDirectory()) {
 			throw new RuntimeException(directory.getAbsolutePath() + " is not a valid directory!");
-		}
-	}
-	
-	public static boolean createDirectoryIfNotExists(File file) {
-		if (!file.exists()) {
-			return file.mkdirs();
 		}
 		return false;
 	}
 	
-	public static boolean createFileIfNoteExists(File file) {
+	public static Boolean createDefaultFile(File file) {
 		if (!file.exists()) {
 			try {
 				return file.createNewFile();
 			} catch (IOException exception) {
 				exception.printStackTrace();
 			}
+		} else if (!file.isFile()) {
+			throw new RuntimeException(file.getAbsolutePath() + " is not a valid file!");
 		}
 		return false;
+	}
+	
+	public static Boolean writeInFile(File file, String[] text) {
+		createDefaultFile(file);
+		BufferedWriter writer;
+		try {
+			writer = new BufferedWriter(new FileWriter(file));
+			for (String line : text) {
+				writer.write(line);
+			}
+			writer.close();
+			return true;
+		} catch (IOException exception) {
+			exception.printStackTrace();
+			return false;
+		}
 	}
 	
 }
