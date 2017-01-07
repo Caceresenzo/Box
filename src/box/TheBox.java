@@ -1,12 +1,7 @@
 package box;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.regex.Pattern;
 
-import box.minecraft.MinecraftServer;
-import box.minecraft.exception.ServerStopException;
 import box.web.WebPageApi;
 import box.web.WebPagePanel;
 import net.sociuris.configuration.ConfigurationFile;
@@ -26,8 +21,7 @@ public class TheBox {
 
 	// private final Logger logger = Logger.getLogger();
 	private final WebSite webSite;
-	private final Map<String, MinecraftServer> minecraftServerMap = new HashMap<String, MinecraftServer>();
-
+	
 	public TheBox(ConfigurationFile configurationFile) {
 		TheBox.PROPERTIES = configurationFile;
 
@@ -40,26 +34,6 @@ public class TheBox {
 		this.webSite.addPage(Pattern.compile("/api/(\\w)*"), new WebPageApi());
 
 		TheBox.instance = this;
-	}
-
-	public void stopServers() throws ServerStopException {
-		for (Entry<String, MinecraftServer> entry : minecraftServerMap.entrySet())
-			entry.getValue().stop();
-	}
-
-	public MinecraftServer getServer(String name) {
-		return minecraftServerMap.get(name);
-	}
-
-	public void removeServer(MinecraftServer minecraftServer) {
-		if (!minecraftServer.isStarted())
-			minecraftServerMap.remove(minecraftServer);
-	}
-
-	public MinecraftServer createServer(String name, String jarFile) {
-		MinecraftServer minecraftServer = new MinecraftServer(this, name, jarFile);
-		minecraftServerMap.put(minecraftServer.getName(), minecraftServer);
-		return minecraftServer;
 	}
 
 	public WebSite getWebSite() {

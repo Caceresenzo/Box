@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import box.gui.TheBoxGui;
+import box.minecraft.ServerManager;
 import box.minecraft.exception.ServerStopException;
 import box.utils.FileUtils;
 import javafx.application.Application;
@@ -72,6 +73,7 @@ public class Bootstrap {
 
 			final ConfigurationFile configurationFile = Bootstrap.loadProperties(settingsFile);
 			final TheBox theBox = new TheBox(configurationFile);
+			final ServerManager serverManager = ServerManager.getManager();
 
 			Thread consoleHandlerThread = new Thread("Console handler") {
 				public void run() {
@@ -88,12 +90,12 @@ public class Bootstrap {
 			consoleHandlerThread.setDaemon(true);
 			consoleHandlerThread.start();
 
-			Runtime.getRuntime().addShutdownHook(new Thread("Shutdown Thread") {
+			Runtime.getRuntime().addShutdownHook(new Thread("Shutdown") {
 				@Override
 				public void run() {
 					try {
 						LOGGER.info("Stopping...");
-						theBox.stopServers();
+						serverManager.stopServers();
 						configurationFile.save();
 					} catch (IOException | ServerStopException e) {
 						LOGGER.error("Unable to stop TheBox: %s", e.getLocalizedMessage());
@@ -118,8 +120,8 @@ public class Bootstrap {
 
 		final ConfigurationSection minecraftServerSection = settings.getSection("minecraftServer");
 		minecraftServerSection.addDefaultProperty("javaPath", System.getProperty("java.home"));
-		minecraftServerSection.addDefaultProperty("jvmArguments", "");
-		minecraftServerSection.addDefaultProperty("additionalArguments", "-Xmx1G");
+		minecraftServerSection.addDefaultProperty("jvmArguments", "-Xmx1G");
+		minecraftServerSection.addDefaultProperty("additionalArguments", "");
 
 		final ConfigurationSection webServerSection = settings.getSection("webServer");
 		webServerSection.addDefaultProperty("enable", true);
