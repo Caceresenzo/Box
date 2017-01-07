@@ -11,6 +11,7 @@ import box.minecraft.ServerManager;
 import box.minecraft.exception.ServerStopException;
 import box.web.WebPageApi;
 import box.web.WebPagePanel;
+import box.web.user.UserManager;
 import net.sociuris.configuration.ConfigurationFile;
 import net.sociuris.configuration.ConfigurationSection;
 import net.sociuris.logger.Logger;
@@ -31,19 +32,21 @@ public class TheBox {
 	private final Logger logger = Logger.getLogger();
 	private final TheBoxGui boxGui;
 	private final WebSite webSite;
-	private final ServerManager serverManager;
 	private final DatabaseManager databaseManager;
+	private final UserManager userManager;
+	private final ServerManager serverManager;
 
 	public TheBox(ConfigurationFile configurationFile) {
 		TheBox.PROPERTIES = configurationFile;
 
 		if (configurationFile.getProperty("useGui").getAsBoolean() || System.console() == null) {
 			this.boxGui = TheBoxGui.createGui();
-			if(!TheBoxGui.hasGui())
+			if(!TheBoxGui.hasGui()) {
 				logger.warn("You try to show the GUI but you system doesn't support it!");
-		}
-		else
+			}
+		} else {
 			this.boxGui = null;
+		}
 
 		ConfigurationSection webServerSection = configurationFile.getSection("webServer");
 		this.webSite = new WebSite(webServerSection.getProperty("ipAddress").getAsString(),
@@ -53,8 +56,9 @@ public class TheBox {
 		this.webSite.addPage(Pattern.compile("/?"), new WebPagePanel());
 		this.webSite.addPage(Pattern.compile("/api/(\\w)*"), new WebPageApi());
 
-		this.serverManager = new ServerManager();
 		this.databaseManager = new DatabaseManager();
+		this.userManager = new UserManager();
+		this.serverManager = new ServerManager();
 
 		TheBox.instance = this;
 	}
@@ -66,36 +70,45 @@ public class TheBox {
 
 		try {
 			serverManager.stopServers();
-		} catch (ServerStopException e) {
-			exception = e;
+		} catch (ServerStopException exception0) {
+			exception = exception0;
 		}
 
 		try {
 			databaseManager.closeConnections();
-		} catch (SQLException e) {
-			exception = e;
+		} catch (SQLException exception0) {
+			exception = exception0;
 		}
 
 		if (TheBoxGui.hasGui()) {
 			try {
 				boxGui.stopProperly();
-			} catch (Exception e) {
-				exception = e;
+			} catch (Exception exception0) {
+				exception = exception0;
 			}
 		}
 
 		try {
 			PROPERTIES.save();
-		} catch (IOException e) {
-			exception = e;
+		} catch (IOException exception0) {
+			exception = exception0;
 		}
 
-		if (exception != null)
+		if (exception != null) {
 			throw exception;
+		}
 	}
 
 	public WebSite getWebSite() {
 		return webSite;
+	}
+
+	public DatabaseManager getDatabaseManager() {
+		return databaseManager;
+	}
+
+	public UserManager getUserManager() {
+		return userManager;
 	}
 
 	public ServerManager getServerManager() {
