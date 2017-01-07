@@ -14,6 +14,7 @@ public class Database {
 	private final Logger logger = Logger.getLogger();
 	private Connection connection;
 	private String name;
+	private boolean fullLogs;
 
 	/**
 	 * Create a new database with the given name
@@ -22,6 +23,12 @@ public class Database {
 	 */
 	public Database(String name) {
 		this.name = name;
+		this.fullLogs = false;
+	}
+	
+	public Database(String name, boolean fullLogs) {
+		this.name = name;
+		this.fullLogs = fullLogs;
 	}
 
 	/**
@@ -33,7 +40,7 @@ public class Database {
 	public Connection openConnection() throws SQLException {
 		if (!isConnected())
 			connection = DriverManager.getConnection("jdbc:sqlite:" + Bootstrap.getWorkingDirectory() + "/database/" + name + ".db");
-		logger.debug("Opened database \"%s\" successfully", name);
+		if (this.fullLogs) { logger.debug("Opened database \"%s\" successfully", name); }
 		return connection;
 	}
 
@@ -48,7 +55,7 @@ public class Database {
 		if (connection == null)
 			return false;
 		else {
-			logger.debug("Close database \"%s\" connection", name);
+			if (this.fullLogs) { logger.debug("Close database \"%s\" connection", name); }
 			connection.close();
 			return true;
 		}
@@ -65,7 +72,7 @@ public class Database {
 		if (!isConnected())
 			openConnection();
 		Statement statement = connection.createStatement();
-		logger.debug("Execute query \"%s\" to datase %s", query, name);
+		if (this.fullLogs) { logger.debug("Execute query \"%s\" to datase %s", query, name); }
 		return statement.executeQuery(query);
 	}
 
@@ -73,7 +80,7 @@ public class Database {
 		if (!isConnected())
 			openConnection();
 		Statement statement = connection.createStatement();
-		logger.debug("Execute query \"%s\" to datase %s", query, name);
+		if (this.fullLogs) { logger.debug("Execute query \"%s\" to datase %s", query, name); }
 		ResultSet resultSet = statement.executeQuery(query);
 		while (resultSet.next())
 			queryResult.nextLine(resultSet);
@@ -93,7 +100,7 @@ public class Database {
 			openConnection();
 		Statement statement = connection.createStatement();
 		statement.closeOnCompletion();
-		logger.debug("Execute update \"%s\" to database %s", query, name);
+		if (this.fullLogs) { logger.debug("Execute update \"%s\" to database %s", query, name); }
 		return statement.executeUpdate(query);
 	}
 
@@ -123,6 +130,19 @@ public class Database {
 	 */
 	public String getName() {
 		return name;
+	}
+	
+	
+	
+	
+	
+	
+	public boolean isFullLogs() {
+		return fullLogs;
+	}
+	
+	public void setFullLogs(boolean fullLogs) {
+		this.fullLogs = fullLogs;
 	}
 
 }

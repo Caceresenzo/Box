@@ -42,9 +42,11 @@ public class DatabaseManager {
 	}
 
 	public void initDatabase() {
+		StringBuilder builder = new StringBuilder();
+		int response = -1;
 		try {
 			if (WEB.isConnected()) {
-				StringBuilder builder = new StringBuilder();
+				builder = new StringBuilder();
 				builder
 					.append("DROP TABLE IF EXISTS `web_sessions`;")
 					.append("CREATE TABLE IF NOT EXISTS `web_sessions` (")
@@ -54,11 +56,11 @@ public class DatabaseManager {
 					.append("  `session_token`  varchar(100)  NOT NULL,")
 					.append("  PRIMARY KEY (`session_id`)")
 					.append(");");
-				int response = WEB.executeUpdate(builder.toString());
-				logger.debug("Database response: %s", response);
+				response = WEB.executeUpdate(builder.toString());
+				logger.debug("Database Initialization (WEB: \"web_session\") : %s", (response == 0 ? "SUCCESS" : "UNKNOWN ERROR"));
 			}
 			if (DATA.isConnected()) {
-				StringBuilder builder = new StringBuilder();
+				builder = new StringBuilder();
 				builder
 					.append("CREATE TABLE IF NOT EXISTS `users` (")
 					.append("  `id`        INTEGER PRIMARY KEY AUTOINCREMENT,")
@@ -67,8 +69,21 @@ public class DatabaseManager {
 					.append("  `salt`      text          NOT NULL,")
 					.append("  `token`     varchar(100)  NOT NULL")
 					.append(");");
-				int response = DATA.executeUpdate(builder.toString());
-				logger.debug("Database response: %s", response);
+				response = DATA.executeUpdate(builder.toString());
+				logger.debug("Database Initialization (DATA: \"users\") : %s", (response == 0 ? "SUCCESS" : "UNKNOWN ERROR"));
+				
+				builder = new StringBuilder();
+				builder
+					.append("CREATE TABLE IF NOT EXISTS `servers` (")
+					.append("  `id`            INTEGER PRIMARY KEY AUTOINCREMENT,")
+					.append("  `owner`         varchar(16)  NOT NULL,")
+					.append("  `subowner`      text         NOT NULL,")
+					.append("  `port`          int(6)       NOT NULL,")
+					.append("  `information`   text         NOT NULL,")
+					.append("  `parameters`    text         NOT NULL")
+					.append(");");
+				response = DATA.executeUpdate(builder.toString());
+				logger.debug("Database Initialization (DATA: \"servers\") : %s", (response == 0 ? "SUCCESS" : "UNKNOWN ERROR"));
 			}
 		} catch (SQLException exception) {
 			CrashReport.makeCrashReport("An error occurred while initialize databases!", exception);

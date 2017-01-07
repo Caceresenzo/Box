@@ -1,4 +1,7 @@
 /bin/
+/crash-reports/
+/logs/
+/database/
 settings.json
 *.classpath
 *.project
