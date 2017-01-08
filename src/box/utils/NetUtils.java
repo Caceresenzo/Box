@@ -1,7 +1,10 @@
 package box.utils;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.ServerSocket;
+import java.net.URL;
+import java.net.URLConnection;
 
 import box.TheBox;
 
@@ -30,6 +33,14 @@ public class NetUtils {
 		} catch (IOException e) {
 			return false;
 		}
+	}
+
+	public static String urlToString(URL url) throws IOException {
+		URLConnection urlConnection = url.openConnection();
+		InputStream inputStream = urlConnection.getInputStream();
+		String result = StringUtils.inputStreamToString(inputStream);
+		inputStream.close();
+		return result;
 	}
 
 }
