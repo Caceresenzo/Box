@@ -17,24 +17,24 @@ import net.sociuris.configuration.ConfigurationSection;
 import net.sociuris.logger.Logger;
 
 public class MinecraftServer {
-	
+
 	private static final String START_COMMAND = getStartCommand();
-	
+
 	private final Logger logger = Logger.getLogger();
 	private final Runtime runtime = Runtime.getRuntime();
-	
+
 	private final int port;
 	private final String name;
 	private final String jarFile;
-	
+
 	private final String owner;
 	private final List<String> operators = new ArrayList<String>();
-	
+
 	private final List<String> logs = new ArrayList<String>();
-	
+
 	private Process process;
 	private PrintWriter writer;
-	
+
 	/**
 	 * Create a new Instance
 	 * 
@@ -45,21 +45,22 @@ public class MinecraftServer {
 	 * @param owner
 	 * @param operators
 	 */
-	protected MinecraftServer(TheBox theBox, int port, String name, String jarFile, String owner, List<String> operators) {
+	protected MinecraftServer(TheBox theBox, int port, String name, String jarFile, String owner,
+			List<String> operators) {
 		this.port = port;
 		this.name = name;
 		this.jarFile = jarFile;
 		this.owner = owner;
 		this.operators.addAll(operators);
 	}
-	
+
 	/**
 	 * Create a new Instance but without the Operators
 	 */
 	protected MinecraftServer(TheBox theBox, int port, String name, String jarFile, String owner) {
 		this(theBox, port, owner, owner, owner, new ArrayList<String>());
 	}
-	
+
 	/**
 	 * Start the Server
 	 * 
@@ -68,15 +69,17 @@ public class MinecraftServer {
 	 */
 	public void start(String additionalArguments) throws Exception {
 		if (!isStarted()) {
-			String finishedStartCommand = MinecraftServer.START_COMMAND.replace("%{JAR_FILE_NAME}", jarFile) + additionalArguments + " --port " + port;
-			
-			File serverWorkingDirectory = new File(TheBox.PROPERTIES.getSection("minecraftServer").getProperty("workingServerDirectory").getAsString().replace("%port%", String.valueOf(port)));
+			String finishedStartCommand = MinecraftServer.START_COMMAND.replace("%{JAR_FILE_NAME}", jarFile)
+					+ additionalArguments + " --port " + port;
+
+			File serverWorkingDirectory = new File(TheBox.PROPERTIES.getSection("minecraftServer")
+					.getProperty("workingServerDirectory").getAsString().replace("%port%", String.valueOf(port)));
 			File serverEulaFile = new File(serverWorkingDirectory.getAbsolutePath() + "\\eula.txt");
 			FileUtils.createDefaultDirectory(serverWorkingDirectory);
-			FileUtils.writeInFile(serverEulaFile, new String[]{"eula=true"});
-			
+			FileUtils.writeInFile(serverEulaFile, new String[] { "eula=true" });
+
 			logger.debug("Starting server %s...", name);
-			this.process = runtime.exec(finishedStartCommand, new String[]{""}, serverWorkingDirectory);
+			this.process = runtime.exec(finishedStartCommand, new String[] { "" }, serverWorkingDirectory);
 			this.writer = new PrintWriter(process.getOutputStream());
 
 			new Thread("Server Input Handler") {
@@ -96,7 +99,7 @@ public class MinecraftServer {
 			throw new StartServerException("Server already started!");
 		}
 	}
-	
+
 	/**
 	 * Stop the Server
 	 * 
@@ -118,7 +121,7 @@ public class MinecraftServer {
 			return -1;
 		}
 	}
-	
+
 	/**
 	 * Send a command to the server
 	 * 
@@ -128,22 +131,24 @@ public class MinecraftServer {
 		writer.println(command);
 		writer.flush();
 	}
-	
+
 	/**
 	 * Send a message to the server
 	 * 
 	 * @param message
 	 */
 	public void sendMessage(String message) {
-		writer.println("tellraw @a [{\"text\":\"TheBox\",\"color\":\"white\"},{\"text\":\" > \",\"color\":\"gray\"},{\"text\":\"" + message + "\",\"color\":\"white\"}]");
+		writer.println(
+				"tellraw @a [{\"text\":\"TheBox\",\"color\":\"white\"},{\"text\":\" > \",\"color\":\"gray\"},{\"text\":\""
+						+ message + "\",\"color\":\"white\"}]");
 		writer.flush();
 	}
-	
+
 	public void sendFormattedMessage(TextComponent textComponent) {
 		writer.println("tellraw @a " + textComponent.toJsonObject().toString());
 		writer.flush();
 	}
-	
+
 	/**
 	 * Send the server output to the console
 	 * 
@@ -154,14 +159,14 @@ public class MinecraftServer {
 		logs.add(log);
 		logger.debug("Append log: %s", log);
 	}
-	
+
 	/**
 	 * Destroy the server process
 	 */
 	public void kill() {
 		process.destroy();
 	}
-	
+
 	/**
 	 * Check if server is started
 	 * 
@@ -170,7 +175,7 @@ public class MinecraftServer {
 	public boolean isStarted() {
 		return (process != null) ? process.isAlive() : false;
 	}
-	
+
 	/**
 	 * Get the server's port
 	 * 
@@ -179,7 +184,7 @@ public class MinecraftServer {
 	public int getPort() {
 		return port;
 	}
-	
+
 	/**
 	 * Get the name of the server
 	 * 
@@ -188,7 +193,7 @@ public class MinecraftServer {
 	public String getName() {
 		return name;
 	}
-	
+
 	/**
 	 * Get the server's owner
 	 * 
@@ -197,7 +202,7 @@ public class MinecraftServer {
 	public String getOwner() {
 		return owner;
 	}
-	
+
 	/**
 	 * Get all of the operators who have access to this server
 	 * 
@@ -206,7 +211,7 @@ public class MinecraftServer {
 	public List<String> getOperators() {
 		return operators;
 	}
-	
+
 	/**
 	 * Initialize the start command
 	 * 
@@ -216,13 +221,11 @@ public class MinecraftServer {
 		final String lineSeparator = File.separator;
 		ConfigurationSection mcServerSection = TheBox.PROPERTIES.getSection("minecraftServer");
 		StringBuilder builder = new StringBuilder();
-		builder
-			.append("\"" + mcServerSection.getProperty("javaPath").getAsString()).append(lineSeparator)
-			.append("bin").append(lineSeparator)
-			.append("java.exe\"").append(' ')
-			.append(mcServerSection.getProperty("jvmArguments").getAsString()).append(' ')
-			.append("-jar \"%{JAR_FILE_NAME}\"").append(' ')
-			.append(mcServerSection.getProperty("additionalArguments").getAsString()).append(' ');
+		builder.append("\"" + mcServerSection.getProperty("javaPath").getAsString()).append(lineSeparator).append("bin")
+				.append(lineSeparator).append("java.exe\"").append(' ')
+				.append(mcServerSection.getProperty("jvmArguments").getAsString()).append(' ')
+				.append("-jar \"%{JAR_FILE_NAME}\"").append(' ')
+				.append(mcServerSection.getProperty("additionalArguments").getAsString()).append(' ');
 		return builder.toString();
 	}
 
