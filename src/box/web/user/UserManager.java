@@ -33,7 +33,7 @@ public class UserManager {
 								result.getInt("id"),
 								result.getString("username"),
 								result.getString("password"),
-								UserRank.getByName(result.getString("rank")),
+								UserRank.getRank(result.getString("rank")),
 								Permission.parsePermissions(result.getString("permissions"))
 							);
 						userMap.put(user.getUsername(), user);

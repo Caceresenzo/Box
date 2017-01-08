@@ -25,8 +25,16 @@ public enum UserRank {
 	public Permission[] getPermissions() {
 		return permissions;
 	}
+	
+	public int getId() {
+		return ordinal();
+	}
+	
+	public static UserRank getRank(int id) {
+		return UserRank.values()[id];
+	}
 
-	public static UserRank getByName(String name) {
+	public static UserRank getRank(String name) {
 		for (UserRank level : UserRank.values()) {
 			if (level.toString().equalsIgnoreCase(name)) {
 				return level;
