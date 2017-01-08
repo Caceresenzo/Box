@@ -59,7 +59,7 @@ public class Bootstrap {
 			File crashReportDir = new File(workingDirectory, "crash-reports");
 			File logsDir = new File(workingDirectory, "logs");
 
-			FileUtils.createDefaultDirectory(new File(workingDirectory, "database"));
+			FileUtils.createDefaultDirectory(new File(workingDirectory, "databases"));
 			FileUtils.createDefaultDirectory(crashReportDir);
 			FileUtils.createDefaultDirectory(logsDir);
 
