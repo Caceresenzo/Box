@@ -6,8 +6,6 @@ import java.net.ServerSocket;
 import java.net.URL;
 import java.net.URLConnection;
 
-import box.TheBox;
-
 public class NetUtils {
 
 	private NetUtils() {
@@ -17,7 +15,7 @@ public class NetUtils {
 		int port = -1;
 		do {
 			try {
-				port = (TheBox.RANDOM.nextInt(65533) + 1);
+				port = (RandomUtils.RANDOM.nextInt(65533) + 1);
 				new ServerSocket(port).close();
 			} catch (IOException e) {
 				port = -1;
