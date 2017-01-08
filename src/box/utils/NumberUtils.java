@@ -49,4 +49,23 @@ public final class NumberUtils {
 			return false;
 	}
 	
+	public static boolean inRange(double min, double max, double value) {
+		return (value > min && value < max); 
+	}
+	
+	public static double setInRange(double min, double max, double value) {
+		if(min <= max) {
+			if(value > max)
+				value = max;
+			else if(value < min)
+				value = min;
+			return value;
+		}
+		else throw new IllegalArgumentException("Min value is greater than max value!");
+	}
+	
+	public static int setInRange(int min, int max, int value) {
+		return (int)NumberUtils.setInRange((double)min, (double)max, (double)value);
+	}
+	
 }
