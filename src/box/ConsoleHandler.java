@@ -51,8 +51,8 @@ public class ConsoleHandler {
 							.append("| STATUT\t| PORT\t| NAME\t\t\t|").append(lineSeparator)
 							.append("+---------+-------+-----------------------+").append(lineSeparator);
 					for(int i = 0; i < 50; i++) {
-						builder.append("| ").append(TheBox.RANDOM.nextInt(1) == 0 ? "STARTED" : "STOPPED").append("  | ")
-						.append(TheBox.RANDOM.nextInt(64000)).append(" | ").append(RandomUtils.getRandomString(16))
+						builder.append("| ").append(RandomUtils.RANDOM.nextInt(1) == 0 ? "STARTED" : "STOPPED").append("  | ")
+						.append(RandomUtils.RANDOM.nextInt(64000)).append(" | ").append(RandomUtils.getString(16))
 						.append(lineSeparator);
 					}
 					/*if (SERVER_MANAGER.hasServers()) {
