@@ -10,11 +10,11 @@ import java.util.Map.Entry;
 
 public class StringUtils {
 
-	public static final Character[] LOWERCASE_ALPHABET = new Character[] { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k',
-			'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
+	public static final Character[] LOWERCASE_ALPHABET = new Character[] { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i',
+			'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
 
-	public static final Character[] UPPERCASE_ALPHABET = new Character[] { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K',
-			'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
+	public static final Character[] UPPERCASE_ALPHABET = new Character[] { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I',
+			'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
 
 	private StringUtils() {
 	}
@@ -83,18 +83,4 @@ public class StringUtils {
 		return responseList.toArray(new String[responseList.size()]);
 	}
 
-	public static String createTable(String[] columns, String[]... rows) {
-		StringBuilder builder = new StringBuilder();
-		int[] columnsLength = new int[columns.length];
-
-		for (int i = 0; i < columns.length; i++)
-			columnsLength[i] = getBiggestStrings("").length;
-
-		char angleBorderChar = '+';
-		char horizontalBorderChar = '-';
-		char verticalBorderChar = '|';
-
-		return builder.toString();
-
-	}
 }
