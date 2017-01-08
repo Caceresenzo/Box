@@ -1,5 +1,6 @@
-package box.utils;
+package box.util;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,12 +22,12 @@ public class CollectionUtils {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static <T extends Object> T[] mergeArray(T[]... arrays) {
+	public static <T> T[] mergeArray(Class<T> arrClass, T[]... arrays) {
 		List<T> list = new ArrayList<T>();
 		for(T[] array : arrays)
 			for(T value : array)
 				list.add(value);
-		return list.toArray((T[])new Object[list.size()]);
+		return list.toArray((T[])Array.newInstance(arrClass, list.size()));
 	}
 
 }

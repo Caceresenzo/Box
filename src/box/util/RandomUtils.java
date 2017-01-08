@@ -1,4 +1,4 @@
-package box.utils;
+package box.util;
 
 import java.util.Random;
 
@@ -7,7 +7,7 @@ public class RandomUtils {
 	public static final Random RANDOM = new Random();
 	
 	public static String getString(int length) {
-		final Character[] chars = CollectionUtils.mergeArray(StringUtils.LOWERCASE_ALPHABET, StringUtils.UPPERCASE_ALPHABET);
+		final Character[] chars = CollectionUtils.mergeArray(Character.class, StringUtils.LOWERCASE_ALPHABET, StringUtils.UPPERCASE_ALPHABET);
 		String result = "";
 		while(length > 0) {
 			result += chars[RandomUtils.RANDOM.nextInt(chars.length)];

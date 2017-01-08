@@ -12,7 +12,7 @@ import box.TheBox;
 import box.minecraft.exception.ServerStopException;
 import box.minecraft.exception.StartServerException;
 import box.minecraft.text.TextComponent;
-import box.utils.FileUtils;
+import box.util.FileUtils;
 import net.sociuris.configuration.ConfigurationSection;
 import net.sociuris.logger.Logger;
 

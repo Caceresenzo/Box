@@ -5,7 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import box.utils.FileUtils;
+import box.util.FileUtils;
 import net.sociuris.configuration.ConfigurationFile;
 import net.sociuris.configuration.ConfigurationSection;
 import net.sociuris.crash.CrashReport;

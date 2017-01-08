@@ -1,4 +1,4 @@
-package box.utils;
+package box.util;
 
 import java.io.File;
 import java.io.FileWriter;
