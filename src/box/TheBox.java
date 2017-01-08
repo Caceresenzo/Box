@@ -30,7 +30,7 @@ public class TheBox {
 	}
 
 	private final Logger logger = Logger.getLogger();
-	//private final TheBoxGui boxGui;
+	private final TheBoxGui boxGui;
 	private final WebSite webSite;
 	private final DatabaseManager databaseManager;
 	private final UserManager userManager;
@@ -38,15 +38,15 @@ public class TheBox {
 
 	public TheBox(ConfigurationFile configurationFile) {
 		TheBox.PROPERTIES = configurationFile;
-		/*
+
 		if (configurationFile.getProperty("useGui").getAsBoolean() || System.console() == null) {
 			this.boxGui = TheBoxGui.createGui();
-			if(!TheBoxGui.hasGui())
+			if (!TheBoxGui.hasGui())
 				logger.warn("You try to show the GUI but you system doesn't support it!");
 		} else {
 			this.boxGui = null;
 		}
-		*/
+
 		ConfigurationSection webServerSection = configurationFile.getSection("webServer");
 		this.webSite = new WebSite(webServerSection.getProperty("ipAddress").getAsString(),
 				webServerSection.getProperty("port").getAsInteger());
@@ -55,8 +55,12 @@ public class TheBox {
 		this.webSite.addPage(Pattern.compile("/?"), new WebPagePanel());
 		this.webSite.addPage(Pattern.compile("/api/(\\w)*"), new WebPageApi());
 
-		this.databaseManager = new DatabaseManager();
 		this.userManager = new UserManager();
+
+		this.databaseManager = new DatabaseManager();
+		this.databaseManager.loadDatabase();
+		this.databaseManager.initDatabase();
+
 		this.serverManager = new ServerManager();
 
 		TheBox.instance = this;
@@ -78,7 +82,7 @@ public class TheBox {
 		} catch (SQLException exception0) {
 			exception = exception0;
 		}
-		/*
+
 		if (TheBoxGui.hasGui()) {
 			try {
 				boxGui.stopProperly();
@@ -86,7 +90,7 @@ public class TheBox {
 				exception = exception0;
 			}
 		}
-		 */
+
 		try {
 			PROPERTIES.save();
 		} catch (IOException exception0) {
