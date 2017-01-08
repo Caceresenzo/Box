@@ -16,10 +16,17 @@ public class TableUtils {
 		// Gets the width of all columns (based on the largest value/title)
 		int[] columnsWidth = new int[columnsTitle.length];
 		for (int i = 0; i < columnsTitle.length; i++) {
-			columnsWidth[i] = StringUtils.getBiggestStrings(columnsValues[i])[0].length();
+			int columnWidth = 10;
+			if (columnsValues.length > 0) {
+				String[] biggestEntries = StringUtils.getBiggestStrings(columnsValues[i]);
+				if (biggestEntries.length > 0)
+					columnsWidth[i] = biggestEntries[0].length();
+			}
 			int columnTitleLength = columnsTitle[i].length();
 			if (columnTitleLength > columnsWidth[i])
 				columnsWidth[i] = columnTitleLength;
+
+			columnsWidth[i] = columnWidth;
 		}
 
 		String horizontalLine = String.valueOf(TableUtils.ANGLE_BORDER_CHAR);
@@ -39,23 +46,25 @@ public class TableUtils {
 			for (int i = 0; i < columnsValues.length; i++)
 				builder.append(TableUtils.arrayToRow(rows[i], columnsWidth)).append(lineSeparator);
 		else
-			builder.append("No row found.").append(lineSeparator);
+			builder.append("\tNo row found.").append(lineSeparator);
 		builder.append(horizontalLine);
 
 		return builder.toString();
-
 	}
 
 	public static String[][] rowToColumnValues(String[][] rows) {
 		// columns [ column index ] [ values array ]
-		String[][] columns = new String[rows[0].length][rows.length];
+		if (rows.length > 0) {
+			String[][] columns = new String[rows[0].length][rows.length];
 
-		for (int i = 0; i < rows.length; i++) {
-			String[] row = rows[i];
-			for (int j = 0; j < row.length; j++)
-				columns[j][i] = row[j];
-		}
-		return columns;
+			for (int i = 0; i < rows.length; i++) {
+				String[] row = rows[i];
+				for (int j = 0; j < row.length; j++)
+					columns[j][i] = row[j];
+			}
+			return columns;
+		} else
+			return new String[0][rows.length];
 	}
 
 	private static String arrayToRow(String[] values, int[] columnsWidth) {
