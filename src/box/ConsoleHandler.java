@@ -1,12 +1,16 @@
 package box;
 
 import java.io.PrintStream;
+import java.util.List;
 
 import box.minecraft.MinecraftServer;
 import box.minecraft.ServerManager;
 import box.minecraft.exception.ServerStopException;
+import box.util.CollectionUtils;
 import box.util.NumberUtils;
 import box.util.RandomUtils;
+import box.util.StringUtils;
+import box.util.TableUtils;
 
 public class ConsoleHandler {
 
@@ -45,16 +49,26 @@ public class ConsoleHandler {
 				String action = commandArgs[0].toLowerCase();
 				switch (action) {
 				case "list":
-					StringBuilder builder = new StringBuilder();
-					final String lineSeparator = System.lineSeparator();
-					builder.append("+----------+-------+-----------------------+").append(lineSeparator)
-							.append("| STATUT\t| PORT\t| NAME\t\t\t|").append(lineSeparator)
-							.append("+---------+-------+-----------------------+").append(lineSeparator);
-					for(int i = 0; i < 50; i++) {
-						builder.append("| ").append(RandomUtils.RANDOM.nextInt(1) == 0 ? "STARTED" : "STOPPED").append("  | ")
-						.append(RandomUtils.RANDOM.nextInt(64000)).append(" | ").append(RandomUtils.getString(16))
-						.append(lineSeparator);
+					
+					List<MinecraftServer> minecraftServerList = theBox.getServerManager().getServers();
+					String[][] minecraftServerRows = new String[minecraftServerList.size()][3];
+					for(int i = 0; i < minecraftServerList.size(); i++) {
+						MinecraftServer minecraftServer = minecraftServerList.get(i);
+						minecraftServerRows[i] = new String[] {
+							(minecraftServer.isStarted() ? "STARTED" : "STOPPED"),
+							String.valueOf(minecraftServer.getPort()),
+							minecraftServer.getName()
+						};
 					}
+					
+					for(String[] arr : minecraftServerRows)
+						print(StringUtils.arrayToString(arr));
+					
+					print(TableUtils.createTable(
+							new String[] { "STATUT", "PORT", "NAME" },
+							minecraftServerRows
+						));
+					
 					/*if (SERVER_MANAGER.hasServers()) {
 						for (MinecraftServer server : SERVER_MANAGER.getServers()) {
 							builder.append("| ").append(server.isStarted() ? "STARTED" : "STOPPED").append("\t| ")
@@ -64,8 +78,6 @@ public class ConsoleHandler {
 					}
 					else
 						builder.append("| No server found.\t\t\t  |").append(lineSeparator);*/
-					builder.append("+----------+-------+----------------------+");
-					print(builder.toString());
 					break;
 				case "stop":
 					if (commandArgs.length > 1) {
