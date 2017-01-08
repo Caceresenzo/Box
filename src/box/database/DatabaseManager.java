@@ -22,7 +22,7 @@ public class DatabaseManager {
 			if (DatabaseManager.WEB != null && WEB.isConnected())
 				WEB.closeConnection();
 
-			if (DATA != null && DATA.isConnected())
+			if (DatabaseManager.DATA != null && DATA.isConnected())
 				DATA.closeConnection();
 
 			WEB = new Database("web");
