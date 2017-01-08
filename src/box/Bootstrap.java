@@ -95,7 +95,7 @@ public class Bootstrap {
 				}
 			});
 
-		} catch (IOException e) {
+		} catch (Exception e) {
 			CrashReport.makeCrashReport("Unable to start TheBox!", e);
 		}
 	}
