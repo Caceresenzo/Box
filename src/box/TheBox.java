@@ -2,7 +2,6 @@ package box;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Random;
 import java.util.regex.Pattern;
 
 import box.database.DatabaseManager;
@@ -21,7 +20,6 @@ public class TheBox {
 
 	public static final String VERSION = "0.1b";
 	public static ConfigurationFile PROPERTIES = null;
-	public static final Random RANDOM = new Random();
 
 	private static TheBox instance;
 
