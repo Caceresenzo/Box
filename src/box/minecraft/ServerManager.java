@@ -18,7 +18,7 @@ public class ServerManager {
 		for (MinecraftServer server : serverList) {
 			try {
 				if (server.isStarted()) {
-					server.sendCommand("tellraw @a [\"\",{\"text\":\"[Box] \",\"color\":\"blue\",\"bold\":true,\"clickEvent\":{\"action\":\"open_url\",\"value\":\"\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"The Box™\"}]}}},{\"text\":\"Box's ServerManager instance recreating.... Stopping Server...\",\"color\":\"none\",\"bold\":false}]");
+					server.sendCommand("tellraw @a [\"\",{\"text\":\"[Box] \",\"color\":\"blue\",\"bold\":true,\"clickEvent\":{\"action\":\"open_url\",\"value\":\"\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"The Boxï¿½\"}]}}},{\"text\":\"Box's ServerManager instance recreating.... Stopping Server...\",\"color\":\"none\",\"bold\":false}]");
 					server.sendCommand("save all");
 					server.stop();
 				}
@@ -42,7 +42,7 @@ public class ServerManager {
 		}
 	}
 
-	public Boolean removeServer(MinecraftServer server) {
+	public boolean removeServer(MinecraftServer server) {
 		if (!server.isStarted()) {
 			return serverList.remove(server);
 		}
@@ -58,7 +58,7 @@ public class ServerManager {
 		return null;
 	}
 
-	public Boolean hasServers() {
+	public boolean hasServers() {
 		return !serverList.isEmpty();
 	}
 
@@ -80,30 +80,15 @@ public class ServerManager {
 		}
 	}
 	
-	public Boolean startServerByPort(Integer port) {
-		try {
-			MinecraftServer server = getServerByPort(port);
-			if (server != null && !server.isStarted()) {
-				server.start("");
-				return true;
+	public MinecraftServer getServer(int port) {
+		if (hasServers()) {
+			for (MinecraftServer server : getServers()) {
+				if (server.getPort() == port) {
+					return server;
+				}
 			}
-		} catch (Exception exception) {
-			exception.printStackTrace();
 		}
-		return false;
-	}
-	
-	public Boolean stopServerByPort(Integer port) {
-		try {
-			MinecraftServer server = getServerByPort(port);
-			if (server != null && server.isStarted()) {
-				server.stop();
-				return true;
-			}
-		} catch (Exception exception) {
-			exception.printStackTrace();
-		}
-		return false;
+		return null;
 	}
 	
 	public MinecraftServer getServerByPort(Integer port) {
@@ -116,5 +101,6 @@ public class ServerManager {
 		}
 		return null;
 	}
+
 
 }
