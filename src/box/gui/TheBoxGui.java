@@ -53,8 +53,6 @@ public class TheBoxGui extends Application {
 		synchronized (mainThread) {
 			mainThread.notify();
 		}
-		
-		webEngine.setUserStyleSheetLocation(ResourcesManager.getResourceAsURL("style.css").toString());
 	}
 
 	@Override
