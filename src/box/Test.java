@@ -35,7 +35,7 @@ public class Test {
 
 	public static void main(String[] args) throws IOException {
 		
-		String randomString = RandomUtils.getRandomString(10);
+		String randomString = RandomUtils.getString(10);
 		logger.info("Random String: " + randomString);
 		
 		TEST_INIT();
