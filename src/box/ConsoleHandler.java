@@ -5,8 +5,8 @@ import java.io.PrintStream;
 import box.minecraft.MinecraftServer;
 import box.minecraft.ServerManager;
 import box.minecraft.exception.ServerStopException;
-import box.utils.NumberUtils;
-import box.utils.RandomUtils;
+import box.util.NumberUtils;
+import box.util.RandomUtils;
 
 public class ConsoleHandler {
 

@@ -1,4 +1,4 @@
-package box.utils;
+package box.util;
 
 public final class NumberUtils {
 

@@ -5,7 +5,7 @@ import java.util.List;
 
 import box.TheBox;
 import box.minecraft.exception.ServerStopException;
-import box.utils.NetUtils;
+import box.util.NetUtils;
 import net.sociuris.logger.Logger;
 
 public class ServerManager {
