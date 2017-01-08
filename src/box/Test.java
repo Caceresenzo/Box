@@ -13,7 +13,6 @@ import box.minecraft.ServerManager;
 import box.minecraft.exception.ServerStopException;
 import box.utils.CollectionUtils;
 import box.utils.RandomUtils;
-import box.web.user.User;
 import box.web.user.UserManager;
 import net.sociuris.configuration.ConfigurationFile;
 import net.sociuris.crash.CrashReport;
@@ -37,6 +36,7 @@ public class Test {
 	public static void main(String[] args) throws IOException {
 		
 		String randomString = RandomUtils.getRandomString(10);
+		logger.info("Random String: " + randomString);
 		
 		TEST_INIT();
 		
@@ -53,6 +53,7 @@ public class Test {
 		
 		MinecraftServer server = servermanager.createServer("Hello World", (short) 25565, "C:\\Users\\Enzo\\OneDrive\\Java\\Git\\Box\\servers\\000000\\spigotmc-1.8-R0.1.jar", "enzo", CollectionUtils.arrayToString(new String[]{"fab", "loius"}));
 		MinecraftServer server2 = servermanager.createServer("Salut tout le monde", (short) 25564, "C:\\Users\\Enzo\\OneDrive\\Java\\Git\\Box\\servers\\000000\\spigotmc-1.8-R0.1.jar", "enzo", CollectionUtils.arrayToString(new String[]{"fab", "loius"}));
+		MinecraftServer server3 = servermanager.createServer("Noob Games", (short) 25562, "C:\\Users\\Enzo\\OneDrive\\Java\\Git\\Box\\servers\\000000\\spigotmc-1.8-R0.1.jar", "enzo", CollectionUtils.arrayToString(new String[]{"fab", "loius"}));
 		/*
 		try {
 			server.start("");
