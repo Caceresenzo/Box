@@ -25,7 +25,7 @@ public class Database {
 		this.name = name;
 		this.fullLogs = false;
 	}
-	
+
 	public Database(String name, boolean fullLogs) {
 		this.name = name;
 		this.fullLogs = fullLogs;
@@ -38,9 +38,12 @@ public class Database {
 	 * @throws SQLException
 	 */
 	public Connection openConnection() throws SQLException {
+		logger.debug("Search database in %s/databases/%s.db", Bootstrap.getWorkingDirectory().getAbsolutePath(), name);
 		if (!isConnected())
-			connection = DriverManager.getConnection("jdbc:sqlite:" + Bootstrap.getWorkingDirectory() + "/database/" + name + ".db");
-		if (this.fullLogs) { logger.debug("Opened database \"%s\" successfully", name); }
+			connection = DriverManager
+					.getConnection("jdbc:sqlite:" + Bootstrap.getWorkingDirectory().getAbsolutePath() + "/databases/" + name + ".db");
+		if (this.fullLogs)
+			logger.debug("Opened database \"%s\" successfully", name);
 		return connection;
 	}
 
@@ -55,7 +58,9 @@ public class Database {
 		if (connection == null)
 			return false;
 		else {
-			if (this.fullLogs) { logger.debug("Close database \"%s\" connection", name); }
+			if (this.fullLogs) {
+				logger.debug("Close database \"%s\" connection", name);
+			}
 			connection.close();
 			return true;
 		}
@@ -72,7 +77,9 @@ public class Database {
 		if (!isConnected())
 			openConnection();
 		Statement statement = connection.createStatement();
-		if (this.fullLogs) { logger.debug("Execute query \"%s\" to datase %s", query, name); }
+		if (this.fullLogs) {
+			logger.debug("Execute query \"%s\" to datase %s", query, name);
+		}
 		return statement.executeQuery(query);
 	}
 
@@ -80,7 +87,9 @@ public class Database {
 		if (!isConnected())
 			openConnection();
 		Statement statement = connection.createStatement();
-		if (this.fullLogs) { logger.debug("Execute query \"%s\" to datase %s", query, name); }
+		if (this.fullLogs) {
+			logger.debug("Execute query \"%s\" to datase %s", query, name);
+		}
 		ResultSet resultSet = statement.executeQuery(query);
 		while (resultSet.next())
 			queryResult.nextLine(resultSet);
@@ -100,7 +109,9 @@ public class Database {
 			openConnection();
 		Statement statement = connection.createStatement();
 		statement.closeOnCompletion();
-		if (this.fullLogs) { logger.debug("Execute update \"%s\" to database %s", query, name); }
+		if (this.fullLogs) {
+			logger.debug("Execute update \"%s\" to database %s", query, name);
+		}
 		return statement.executeUpdate(query);
 	}
 
@@ -131,16 +142,11 @@ public class Database {
 	public String getName() {
 		return name;
 	}
-	
-	
-	
-	
-	
-	
+
 	public boolean isFullLogs() {
 		return fullLogs;
 	}
-	
+
 	public void setFullLogs(boolean fullLogs) {
 		this.fullLogs = fullLogs;
 	}
