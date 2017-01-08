@@ -8,7 +8,6 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-import box.Bootstrap;
 import box.TheBox;
 import box.minecraft.exception.ServerStopException;
 import box.minecraft.exception.StartServerException;
@@ -71,7 +70,7 @@ public class MinecraftServer {
 		if (!isStarted()) {
 			String finishedStartCommand = MinecraftServer.START_COMMAND.replace("%{JAR_FILE_NAME}", jarFile) + additionalArguments + " --port " + port;
 			
-			File serverWorkingDirectory = new File(Bootstrap.getWorkingDirectory().getAbsolutePath() + "\\servers\\" + port);
+			File serverWorkingDirectory = new File(TheBox.PROPERTIES.getSection("minecraftServer").getProperty("workingServerDirectory").getAsString().replace("%port%", String.valueOf(port)));
 			File serverEulaFile = new File(serverWorkingDirectory.getAbsolutePath() + "\\eula.txt");
 			FileUtils.createDefaultDirectory(serverWorkingDirectory);
 			FileUtils.writeInFile(serverEulaFile, new String[]{"eula=true"});

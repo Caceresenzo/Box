@@ -79,5 +79,42 @@ public class ServerManager {
 			throw stopException;
 		}
 	}
+	
+	public Boolean startServerByPort(Integer port) {
+		try {
+			MinecraftServer server = getServerByPort(port);
+			if (server != null && !server.isStarted()) {
+				server.start("");
+				return true;
+			}
+		} catch (Exception exception) {
+			exception.printStackTrace();
+		}
+		return false;
+	}
+	
+	public Boolean stopServerByPort(Integer port) {
+		try {
+			MinecraftServer server = getServerByPort(port);
+			if (server != null && server.isStarted()) {
+				server.stop();
+				return true;
+			}
+		} catch (Exception exception) {
+			exception.printStackTrace();
+		}
+		return false;
+	}
+	
+	public MinecraftServer getServerByPort(Integer port) {
+		if (hasServers()) {
+			for (MinecraftServer server : getServers()) {
+				if (server.getPort() == port) {
+					return server;
+				}
+			}
+		}
+		return null;
+	}
 
 }
