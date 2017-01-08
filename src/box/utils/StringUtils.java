@@ -71,8 +71,7 @@ public class StringUtils {
 				responseList.clear();
 				biggestLength = length;
 				responseList.add(str);
-			}
-			else if(biggestLength == length)
+			} else if (biggestLength == length)
 				responseList.add(str);
 		}
 		return responseList.toArray(new String[responseList.size()]);
@@ -82,9 +81,9 @@ public class StringUtils {
 		StringBuilder builder = new StringBuilder();
 		int[] columnsLength = new int[columns.length];
 
-		for(int i = 0; i < columns.length; i++)
+		for (int i = 0; i < columns.length; i++)
 			columnsLength[i] = getBiggestStrings("").length;
-		
+
 		char angleBorderChar = '+';
 		char horizontalBorderChar = '-';
 		char verticalBorderChar = '|';
@@ -92,5 +91,4 @@ public class StringUtils {
 		return builder.toString();
 
 	}
-
 }
