@@ -11,13 +11,22 @@ public class CollectionUtils {
 			list.add(t);
 		return list;
 	}
-	
+
 	@SuppressWarnings("unchecked")
-	public static <T> T[] listToArray(List<T> list) {
+	public static <T extends Object> T[] listToArray(List<T> list) {
 		Object[] arr = new Object[list.size()];
-		for(int i = 0; i < list.size(); i++)
+		for (int i = 0; i < list.size(); i++)
 			arr[i] = list.get(i);
-		return (T[])arr;
+		return (T[]) arr;
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <T extends Object> T[] mergeArray(T[]... arrays) {
+		List<T> list = new ArrayList<T>();
+		for(T[] array : arrays)
+			for(T value : array)
+				list.add(value);
+		return list.toArray((T[])new Object[list.size()]);
 	}
 
 }
