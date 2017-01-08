@@ -103,7 +103,7 @@ public class MinecraftServer {
 	 * @return the exit code value
 	 * @throws ServerStopException
 	 */
-	public Integer stop() throws ServerStopException {
+	public int stop() throws ServerStopException {
 		if (isStarted()) {
 			logger.info("Stopping server " + name + "...");
 			try {
@@ -167,7 +167,7 @@ public class MinecraftServer {
 	 * 
 	 * @return {@code true} if the server is started, {@code false} otherwise
 	 */
-	public Boolean isStarted() {
+	public boolean isStarted() {
 		return (process != null) ? process.isAlive() : false;
 	}
 	
