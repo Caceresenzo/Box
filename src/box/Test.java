@@ -50,11 +50,11 @@ public class Test {
 		/*
 		 *  TEST ZONE
 		 */
+		String jarPath = "C:\\Users\\Enzo\\Desktop\\box\\servers\\000000\\spigotmc-1.8-R0.1.jar";
+		MinecraftServer server = servermanager.createServer("Hello World", (short) 25565, jarPath, "enzo", CollectionUtils.arrayToString(new String[]{"fab", "loius"}));
+		MinecraftServer server2 = servermanager.createServer("Salut tout le monde", (short) 25564, jarPath, "enzo", CollectionUtils.arrayToString(new String[]{"fab", "loius"}));
+		MinecraftServer server3 = servermanager.createServer("Noob Games", (short) 25562, jarPath, "enzo", CollectionUtils.arrayToString(new String[]{"fab", "loius"}));
 		
-		MinecraftServer server = servermanager.createServer("Hello World", (short) 25565, "C:\\Users\\Enzo\\OneDrive\\Java\\Git\\Box\\servers\\000000\\spigotmc-1.8-R0.1.jar", "enzo", CollectionUtils.arrayToString(new String[]{"fab", "loius"}));
-		MinecraftServer server2 = servermanager.createServer("Salut tout le monde", (short) 25564, "C:\\Users\\Enzo\\OneDrive\\Java\\Git\\Box\\servers\\000000\\spigotmc-1.8-R0.1.jar", "enzo", CollectionUtils.arrayToString(new String[]{"fab", "loius"}));
-		MinecraftServer server3 = servermanager.createServer("Noob Games", (short) 25562, "C:\\Users\\Enzo\\OneDrive\\Java\\Git\\Box\\servers\\000000\\spigotmc-1.8-R0.1.jar", "enzo", CollectionUtils.arrayToString(new String[]{"fab", "loius"}));
-		/*
 		try {
 			server.start("");
 			Logger.getLogger().info(": " + server.isStarted());
@@ -62,7 +62,7 @@ public class Test {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		*/
+		
 		
 	}
 	
