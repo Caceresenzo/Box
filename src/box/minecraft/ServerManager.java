@@ -34,7 +34,7 @@ public class ServerManager {
 		}
 		MinecraftServer minecraftServer = new MinecraftServer(TheBox.getInstance(), port, name, jarFilePath, owner, operators);
 		if (!serverList.contains(minecraftServer)) {
-			logger.info("Creating Minecraft server: %s", minecraftServer.toString());
+			logger.info("Creating Minecraft server: %s", minecraftServer.getName());
 			serverList.add(minecraftServer);
 			return minecraftServer;
 		} else {
