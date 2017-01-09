@@ -21,7 +21,7 @@ public class FileUtils {
 		String extension = null;
 		int dotPosition = fileName.lastIndexOf(".");
 		if (dotPosition != -1)
-			extension = fileName.substring(dotPosition);
+			extension = fileName.substring(dotPosition + 1);
 		return extension;
 	}
 
