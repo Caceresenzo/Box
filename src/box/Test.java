@@ -13,7 +13,6 @@ import box.minecraft.ServerManager;
 import box.minecraft.exception.ServerStopException;
 import box.util.CollectionUtils;
 import box.util.RandomUtils;
-import box.web.user.UserManager;
 import net.sociuris.configuration.ConfigurationFile;
 import net.sociuris.crash.CrashReport;
 import net.sociuris.logger.Logger;
@@ -30,7 +29,7 @@ public class Test {
 
 	private static DatabaseManager dbmanager = theBox.getDatabaseManager();
 	private static ServerManager servermanager = theBox.getServerManager();
-	private static UserManager usermanager = theBox.getUserManager();
+	//private static UserManager usermanager = theBox.getUserManager();
 	private static File workingDirectory = new File(System.getProperty("user.dir", "."));
 
 	public static void main(String[] args) throws IOException {
@@ -52,8 +51,8 @@ public class Test {
 		 */
 		String jarPath = "C:\\Users\\Enzo\\Desktop\\box\\servers\\000000\\spigotmc-1.8-R0.1.jar";
 		MinecraftServer server = servermanager.createServer("Hello World", (short) 25565, jarPath, "enzo", CollectionUtils.arrayToList(new String[]{"fab", "loius"}));
-		MinecraftServer server2 = servermanager.createServer("Salut tout le monde", (short) 25564, jarPath, "enzo", CollectionUtils.arrayToList(new String[]{"fab", "loius"}));
-		MinecraftServer server3 = servermanager.createServer("Noob Games", (short) 25562, jarPath, "enzo", CollectionUtils.arrayToList(new String[]{"fab", "loius"}));
+		//MinecraftServer server2 = servermanager.createServer("Salut tout le monde", (short) 25564, jarPath, "enzo", CollectionUtils.arrayToList(new String[]{"fab", "loius"}));
+		//MinecraftServer server3 = servermanager.createServer("Noob Games", (short) 25562, jarPath, "enzo", CollectionUtils.arrayToList(new String[]{"fab", "loius"}));
 		
 		try {
 			server.start("");
