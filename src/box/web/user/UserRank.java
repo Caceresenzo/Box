@@ -35,12 +35,11 @@ public enum UserRank {
 	}
 
 	public static UserRank getRank(String name) {
-		for (UserRank level : UserRank.values()) {
-			if (level.toString().equalsIgnoreCase(name)) {
-				return level;
-			}
+		try {
+			return UserRank.valueOf(name);
+		} catch (IllegalArgumentException exception) {
+			return null;
 		}
-		return null;
 	}
 
 }
