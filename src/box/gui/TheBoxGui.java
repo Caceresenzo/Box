@@ -1,17 +1,24 @@
 package box.gui;
 
 import java.awt.Desktop;
+import java.util.Optional;
 
 import box.TheBox;
 import box.resources.ResourcesManager;
+import box.resources.TranslationManager;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import net.sociuris.crash.CrashReport;
 
 public class TheBoxGui extends Application {
@@ -49,7 +56,7 @@ public class TheBoxGui extends Application {
 	public TheBoxGui() {
 		Thread.currentThread().setName("TheBox GUI");
 		TheBoxGui.instance = this;
-		
+
 		synchronized (mainThread) {
 			mainThread.notify();
 		}
@@ -67,6 +74,20 @@ public class TheBoxGui extends Application {
 
 		stage.sizeToScene();
 		stage.centerOnScreen();
+
+		stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+
+			@Override
+			public void handle(WindowEvent event) {
+				Alert closeAlert = new Alert(AlertType.WARNING, TranslationManager.GUI_CLOSE_MESSAGE,
+						ButtonType.YES, ButtonType.NO);
+				Optional<ButtonType> result = closeAlert.showAndWait();
+				if (result.isPresent()) {
+					if (result.get() != ButtonType.YES)
+						event.consume();
+				}
+			}
+		});
 
 		webEngine.load(
 				"http://127.0.0.1:" + TheBox.PROPERTIES.getSection("webServer").getProperty("port").getAsInteger());
