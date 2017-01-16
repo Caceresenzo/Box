@@ -7,12 +7,12 @@ import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.google.gson.JsonObject;
-
+import net.sociuris.http.HttpConnection;
 import net.sociuris.http.HttpRequest;
 import net.sociuris.http.HttpResponse;
 import net.sociuris.http.HttpResponseHeader;
 import net.sociuris.http.HttpStatusCode;
+import net.sociuris.json.JsonObject;
 import net.sociuris.web.WebSite;
 
 public class WebApiManager {
@@ -25,7 +25,7 @@ public class WebApiManager {
 		this.webPageMap.put(Pattern.compile("/authentification"), new WebApiPageAuthentication());
 	}
 
-	public String handleConnection(WebSite webSite, Matcher uriMatcher, HttpRequest request, HttpResponse response) {
+	public String handleConnection(WebSite webSite, Matcher uriMatcher, HttpConnection connection, HttpRequest request, HttpResponse response) {
 		String requestUri = request.getRequestedUri().substring(4);
 		Matcher lastMatcher = null;
 		WebApiPage webPage = null;
@@ -45,7 +45,7 @@ public class WebApiManager {
 		responseHeader.setCharset(StandardCharsets.UTF_8);
 
 		JsonObject jsonObj = new JsonObject();
-		webPage.writePageContent(webSite, uriMatcher, request, response, jsonObj);
+		webPage.writePageContent(webSite, uriMatcher, connection, request, response, jsonObj);
 		return jsonObj.toString();
 
 	}

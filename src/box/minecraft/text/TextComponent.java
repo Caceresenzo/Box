@@ -3,9 +3,9 @@ package box.minecraft.text;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+import net.sociuris.json.JsonArray;
+import net.sociuris.json.JsonElement;
+import net.sociuris.json.JsonObject;
 
 public abstract class TextComponent {
 	
@@ -142,25 +142,25 @@ public abstract class TextComponent {
 		if (!extra.isEmpty()) {
 			JsonArray extraArray = new JsonArray();
 			for (TextComponent textComponent : extra)
-				extraArray.add(textComponent.toJsonObject());
-			jsonObj.add("extra", extraArray);
+				extraArray.addProperty(textComponent.toJsonObject());
+			jsonObj.addProperty("extra", extraArray);
 		}
 	}
 
 	protected void fromJson(JsonObject jsonObj) {
-		if (jsonObj.has("color"))
+		if (jsonObj.hasValue("color"))
 			this.setColor(TextColor.valueOf(jsonObj.get("color").getAsString().toUpperCase()));
-		if (jsonObj.has("bold"))
+		if (jsonObj.hasValue("bold"))
 			this.setBold(jsonObj.get("bold").getAsBoolean());
-		if (jsonObj.has("italic"))
+		if (jsonObj.hasValue("italic"))
 			this.setItalic(jsonObj.get("italic").getAsBoolean());
-		if (jsonObj.has("underlined"))
+		if (jsonObj.hasValue("underlined"))
 			this.setUnderlined(jsonObj.get("underlined").getAsBoolean());
-		if (jsonObj.has("strikethrough"))
+		if (jsonObj.hasValue("strikethrough"))
 			this.setStrikethrough(jsonObj.get("strikethrough").getAsBoolean());
-		if (jsonObj.has("obfuscated"))
+		if (jsonObj.hasValue("obfuscated"))
 			this.setObfuscated(jsonObj.get("obfuscated").getAsBoolean());
-		if (jsonObj.has("extra")) {
+		if (jsonObj.hasValue("extra")) {
 			for (JsonElement jsonElement : jsonObj.get("extra").getAsJsonArray()) {
 				if (jsonElement.isJsonObject())
 					this.addExtra(TextComponentUtils.createTextComponentFromJson(jsonElement.getAsJsonObject()));

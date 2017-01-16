@@ -2,9 +2,9 @@ package box.minecraft.text;
 
 import java.util.Properties;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+import net.sociuris.json.JsonArray;
+import net.sociuris.json.JsonElement;
+import net.sociuris.json.JsonObject;
 
 public class TextComponentTranslation extends TextComponent {
 
@@ -48,8 +48,8 @@ public class TextComponentTranslation extends TextComponent {
 		if (args.length > 0) {
 			JsonArray argsArray = new JsonArray();
 			for (String arg : args)
-				argsArray.add(arg);
-			jsonObj.add("with", argsArray);
+				argsArray.addProperty(arg);
+			jsonObj.addProperty("with", argsArray);
 		}
 		super.setData(jsonObj);
 		return jsonObj;

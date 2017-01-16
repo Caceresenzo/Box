@@ -4,10 +4,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import com.google.gson.JsonArray;
-
 import net.sociuris.configuration.ConfigurationArray;
 import net.sociuris.configuration.ConfigurationSection;
+import net.sociuris.json.JsonArray;
 
 public class TextComponentArray implements Iterable<TextComponent> {
 
@@ -46,7 +45,7 @@ public class TextComponentArray implements Iterable<TextComponent> {
 
 	public void saveToConfigurationFile(ConfigurationArray configurationArray) {
 		for (TextComponent textComponent : textComponentList)
-			configurationArray.addValue(new ConfigurationSection(textComponent.toJsonObject()));
+			configurationArray.add(new ConfigurationSection(textComponent.toJsonObject()));
 	}
 
 	public TextComponent[] toArray() {
@@ -56,7 +55,7 @@ public class TextComponentArray implements Iterable<TextComponent> {
 	public JsonArray toJsonArray() {
 		JsonArray jsonArray = new JsonArray();
 		for(TextComponent textComponent : textComponentList)
-			jsonArray.add(textComponent.toJsonObject());
+			jsonArray.addProperty(textComponent.toJsonObject());
 		return jsonArray;
 	}
 

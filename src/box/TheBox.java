@@ -33,10 +33,10 @@ public class TheBox {
 	private final UserManager userManager;
 	private final ServerManager serverManager;
 
-	public TheBox(ConfigurationFile configurationFile) {
+	public TheBox(ConfigurationFile configurationFile) throws IOException {
 		TheBox.PROPERTIES = configurationFile;
 
-		if (configurationFile.getProperty("useGui").getAsBoolean() || System.console() == null) {
+		if (configurationFile.getValue("useGui").getAsBoolean() || System.console() == null) {
 			this.boxGui = TheBoxGui.createGui();
 			if (!TheBoxGui.hasGui())
 				logger.warn("You try to create GUI but you system doesn't support it!");
@@ -44,9 +44,8 @@ public class TheBox {
 			this.boxGui = null;
 
 		ConfigurationSection webServerSection = configurationFile.getSection("webServer");
-		this.webSite = new WebSite(webServerSection.getProperty("ipAddress").getAsString(),
-				webServerSection.getProperty("port").getAsInteger());
-		this.webSite.start();
+		this.webSite = new WebSite(webServerSection.getValue("ipAddress").getAsString(),
+				webServerSection.getValue("port").getAsInteger());
 
 		this.webSite.addPage("/?", new WebPagePanel());
 		this.webSite.addPage("/api/(\\w)*", new WebPageApi());

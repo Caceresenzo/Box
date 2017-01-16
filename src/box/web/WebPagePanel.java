@@ -4,6 +4,7 @@ import java.util.regex.Matcher;
 
 import box.TheBox;
 import net.sociuris.html.HtmlUtils;
+import net.sociuris.http.HttpConnection;
 import net.sociuris.http.HttpRequest;
 import net.sociuris.http.HttpResponse;
 import net.sociuris.web.WebPage;
@@ -15,7 +16,7 @@ public class WebPagePanel implements WebPage {
 	private static final String JAVASCRIPT = "";
 	
 	@Override
-	public String writePageContent(WebSite webSite, Matcher uriMatcher, HttpRequest request, HttpResponse response) {
+	public String writePageContent(WebSite webSite, Matcher uriMatcher, HttpConnection connection, HttpRequest request, HttpResponse response) {
 		StringBuilder builder = new StringBuilder();
 		
 		builder.append("<!DOCTYPE html><html><head><title>TheBox v" + TheBox.VERSION + "</title><link href=\"https://fonts.googleapis.com/icon?family=Material+Icons\" rel=\"stylesheet\"><link href=\"https://fonts.googleapis.com/css?family=Roboto:300,400,700\" rel=\"stylesheet\"><style>@charset \"UTF-8\";body{font-family:Roboto,sans-serif;background-color:#36393E;color:#FAFAFA;margin:0}.unselectable{user-select:none;-moz-user-select:none;-webkit-user-select:none;-ms-user-select:none}span.loader{display:block;border:5px solid #F3F3F3;border-top:5px solid #555;border-radius:50%;animation:spin 1s linear infinite;-webkit-animation:spin 1s linear infinite;width:50px;height:50px}@keyframes spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}div.error-container{display:block;text-align:center;color:#F44336}div.error-container>span.material-icons{font-size:3em}div.error-container>p{font-size:1.2em;margin:2px 0}div.container{background-color:#282B30;padding:10px 20px;margin:10px;-webkit-box-shadow:0 0 10px 0 rgba(0,0,0,.2);box-shadow:0 0 10px 0 rgba(0,0,0,.2)}div#scene-container{position:absolute;top:75px;left:300px;right:0;box-sizing:border-box}header.fixed-header{position:fixed;left:0;top:0;right:0;background-color:#1E2124;border-bottom-color:#212121;width:100%;height:75px;border-bottom-width:1px;border-bottom-style:solid;-webkit-box-shadow:0 0 10px 5px rgba(0,0,0,.2);box-shadow:0 0 10px 5px rgba(0,0,0,.2);z-index:999}header.fixed-header>h1{line-height:75px;margin:0 10px}nav.navigation{position:absolute;top:75px;left:0;bottom:0;width:300px;background-color:#282B30;color:#FAFAFA;overflow-y:auto;z-index:998}nav.navigation>ul{list-style-type:none;margin:0;padding:0}nav.navigation>ul>li.navigation-link{display:block;cursor:pointer;border-bottom:1px solid #282828;padding:10px 20px}nav.navigation>ul>li.navigation-link.active,nav.navigation>ul>li.navigation-link:active,nav.navigation>ul>li.navigation-link:hover{background-color:#2E3136}</style></head><body><header class=\"fixed-header unselectable\"><h1>TheBox v" + TheBox.VERSION + "</h1></header><nav class=\"navigation unselectable\"><ul>");

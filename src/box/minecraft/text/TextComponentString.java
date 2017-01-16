@@ -1,6 +1,6 @@
 package box.minecraft.text;
 
-import com.google.gson.JsonObject;
+import net.sociuris.json.JsonObject;
 
 public class TextComponentString extends TextComponent {
 

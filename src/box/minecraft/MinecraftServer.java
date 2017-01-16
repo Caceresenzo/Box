@@ -73,7 +73,7 @@ public class MinecraftServer {
 					+ additionalArguments + " --port " + port;
 
 			File serverWorkingDirectory = new File(TheBox.PROPERTIES.getSection("minecraftServer")
-					.getProperty("workingServerDirectory").getAsString().replace("%port%", String.valueOf(port)));
+					.getValue("workingServerDirectory").getAsString().replace("%port%", String.valueOf(port)));
 			File serverEulaFile = new File(serverWorkingDirectory.getAbsolutePath() + "\\eula.txt");
 			FileUtils.createDefaultDirectory(serverWorkingDirectory);
 			FileUtils.writeInFile(serverEulaFile, new String[] { "eula=true" });
@@ -221,11 +221,11 @@ public class MinecraftServer {
 		final String lineSeparator = File.separator;
 		ConfigurationSection mcServerSection = TheBox.PROPERTIES.getSection("minecraftServer");
 		StringBuilder builder = new StringBuilder();
-		builder.append("\"" + mcServerSection.getProperty("javaPath").getAsString()).append(lineSeparator).append("bin")
+		builder.append("\"" + mcServerSection.getValue("javaPath").getAsString()).append(lineSeparator).append("bin")
 				.append(lineSeparator).append("java.exe\"").append(' ')
-				.append(mcServerSection.getProperty("jvmArguments").getAsString()).append(' ')
+				.append(mcServerSection.getValue("jvmArguments").getAsString()).append(' ')
 				.append("-jar \"%{JAR_FILE_NAME}\"").append(' ')
-				.append(mcServerSection.getProperty("additionalArguments").getAsString()).append(' ');
+				.append(mcServerSection.getValue("additionalArguments").getAsString()).append(' ');
 		return builder.toString();
 	}
 

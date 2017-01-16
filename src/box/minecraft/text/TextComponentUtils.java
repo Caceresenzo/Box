@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+import net.sociuris.json.JsonElement;
+import net.sociuris.json.JsonObject;
 
 public class TextComponentUtils {
 
@@ -13,13 +13,13 @@ public class TextComponentUtils {
 	}
 
 	public static TextComponent createTextComponentFromJson(JsonObject jsonObj) {
-		if (jsonObj.has("text")) {
+		if (jsonObj.hasValue("text")) {
 			TextComponentString textComponentString = new TextComponentString(jsonObj.get("text").getAsString());
 			textComponentString.fromJson(jsonObj);
 			return textComponentString;
-		} else if (jsonObj.has("translate")) {
+		} else if (jsonObj.hasValue("translate")) {
 			TextComponentTranslation textComponentTranslate;
-			if (!jsonObj.has("with"))
+			if (!jsonObj.hasValue("with"))
 				textComponentTranslate = new TextComponentTranslation(jsonObj.get("translate").getAsString());
 			else {
 				Iterator<JsonElement> iterator = jsonObj.get("with").getAsJsonArray().iterator();
@@ -27,6 +27,7 @@ public class TextComponentUtils {
 				while (iterator.hasNext())
 					jsonElementList.add(iterator.next());
 				textComponentTranslate = new TextComponentTranslation(jsonObj.get("translate").getAsString(),
+
 						jsonElementList.toArray(new JsonElement[jsonElementList.size()]));
 			}
 			textComponentTranslate.fromJson(jsonObj);

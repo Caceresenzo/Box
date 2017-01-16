@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import box.util.FileUtils;
 import net.sociuris.configuration.ConfigurationFile;
 import net.sociuris.configuration.ConfigurationSection;
+import net.sociuris.configuration.exception.ConfigurationParseException;
 import net.sociuris.crash.CrashReport;
 import net.sociuris.logger.Logger;
 
@@ -100,28 +101,28 @@ public class Bootstrap {
 		}
 	}
 
-	public static ConfigurationFile loadProperties(String settingsFilePath) throws IOException {
+	public static ConfigurationFile loadProperties(String settingsFilePath) throws IOException, ConfigurationParseException {
 		final File settingsFile = new File(workingDirectory, settingsFilePath);
 		if (!settingsFile.exists())
 			settingsFile.createNewFile();
 
 		final ConfigurationFile settings = new ConfigurationFile(settingsFile);
-		settings.addDefaultProperty("useGui", true);
+		settings.addDefaultValue("useGui", true);
 
 		final ConfigurationSection minecraftServerSection = settings.getSection("minecraftServer");
-		minecraftServerSection.addDefaultProperty("javaPath", System.getProperty("java.home"));
-		minecraftServerSection.addDefaultProperty("jvmArguments", "-Xmx1G");
-		minecraftServerSection.addDefaultProperty("additionalArguments", "");
+		minecraftServerSection.addDefaultValue("javaPath", System.getProperty("java.home"));
+		minecraftServerSection.addDefaultValue("jvmArguments", "-Xmx1G");
+		minecraftServerSection.addDefaultValue("additionalArguments", "");
 
 		final ConfigurationSection webServerSection = settings.getSection("webServer");
-		webServerSection.addDefaultProperty("enable", true);
-		webServerSection.addDefaultProperty("ipAddress", "127.0.0.1");
-		webServerSection.addDefaultProperty("port", 8080);
+		webServerSection.addDefaultValue("enable", true);
+		webServerSection.addDefaultValue("ipAddress", "127.0.0.1");
+		webServerSection.addDefaultValue("port", 8080);
 
 		final ConfigurationSection socketServerSection = settings.getSection("socketServer");
-		socketServerSection.addDefaultProperty("enable", true);
-		socketServerSection.addDefaultProperty("ipAddress", "127.0.0.1");
-		socketServerSection.addDefaultProperty("port", 32768);
+		socketServerSection.addDefaultValue("enable", true);
+		socketServerSection.addDefaultValue("ipAddress", "127.0.0.1");
+		socketServerSection.addDefaultValue("port", 32768);
 
 		settings.save();
 
