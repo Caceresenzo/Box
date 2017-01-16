@@ -6,6 +6,7 @@ import java.util.Optional;
 import box.TheBox;
 import box.resources.ResourcesManager;
 import box.resources.TranslationManager;
+import box.web.WebPagePanel;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.geometry.Rectangle2D;
@@ -79,8 +80,8 @@ public class TheBoxGui extends Application {
 
 			@Override
 			public void handle(WindowEvent event) {
-				Alert closeAlert = new Alert(AlertType.WARNING, TranslationManager.GUI_CLOSE_MESSAGE,
-						ButtonType.YES, ButtonType.NO);
+				Alert closeAlert = new Alert(AlertType.WARNING, TranslationManager.GUI_CLOSE_MESSAGE, ButtonType.YES,
+						ButtonType.NO);
 				Optional<ButtonType> result = closeAlert.showAndWait();
 				if (result.isPresent()) {
 					if (result.get() != ButtonType.YES)
@@ -89,8 +90,17 @@ public class TheBoxGui extends Application {
 			}
 		});
 
-		webEngine.load(
-				"http://127.0.0.1:" + TheBox.PROPERTIES.getSection("webServer").getProperty("port").getAsInteger());
+		webEngine.loadContent(WebPagePanel.generateLocalPage());
+
+		/*webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<Worker.State>() {
+		    @Override
+		    public void changed(ObservableValue<? extends State> ov, State t, State t1) {
+		        if (t1 == Worker.State.SUCCEEDED) {
+					JSObject windowJSObject = (JSObject) webEngine.executeScript("window");
+					windowJSObject.setMember("API", new TheBoxGuiHandler());
+		        }
+		    }
+		});*/
 
 		stage.show();
 	}
